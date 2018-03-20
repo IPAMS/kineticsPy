@@ -9,7 +9,6 @@ import matplotlib
 import matplotlib.pyplot as pl
 import matplotlib.collections as collections
 import re
-from StringIO import StringIO
 
 #speciesColors = ["#00539E","#314500","#BD007B","#F48F00","#00192F","#FF80D2","#FFCA80","#FFBBBB","#BBFFBB",]
 #speciesLabels = [\

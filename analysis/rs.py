@@ -8,7 +8,6 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as pl
 import matplotlib.collections as collections
-from StringIO import StringIO
 
 
 def norm(dat):

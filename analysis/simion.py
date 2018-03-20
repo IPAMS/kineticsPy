@@ -5,7 +5,7 @@ simion / RS simulation result analysis
 """
 import numpy as np
 import matplotlib.pyplot as pl
-from StringIO import StringIO
+from io import StringIO
 
 def importData(filename,n_header_l,n_conc_l):
 	#n_header_l = 117 #the number of the header lines

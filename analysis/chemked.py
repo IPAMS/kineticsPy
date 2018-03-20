@@ -6,7 +6,6 @@ Chemked simulation result analysis
 
 import numpy as np
 import matplotlib.pyplot as pl
-from StringIO import StringIO
 
 
 def norm(dat):
