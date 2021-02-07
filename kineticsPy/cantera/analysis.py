@@ -7,8 +7,6 @@ Cantera simulation result analysis
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as pl
-import matplotlib.collections as collections
-import re
 
 speciesColors = ["#00539E","#314500","#BD007B","#F48F00","#00192F","#FF80D2","#FFCA80","#FFBBBB","#BBFFBB",]
 speciesLabels = [\
@@ -39,7 +37,7 @@ def importCanteraData(filename,n_header_l):
 	return concs
 
 
-def plotWaterClusterTimeSeriesComparisonCantera(rawRS,rawCan,name,titleStr,annotation):
+def plotWaterClusterTimeSeriesComparisonCantera(rawRS, rawCan, name, titleStr, annotation):
 
 
 	times_msec_RS= rawRS[:,0]*1e6
