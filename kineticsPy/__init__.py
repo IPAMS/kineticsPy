@@ -1,7 +1,10 @@
+# -*- coding: utf-8 -*-
+
 """
 Analysis, visualization, automation and helper modules for chemical kinetics simulations
 """
 
+from . import base
 from . import cantera
-from .cantera import *
-__all__ = ['cantera']
+
+#__all__ = ['cantera']
