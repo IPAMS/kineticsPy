@@ -72,3 +72,10 @@ class Trajectory:
 
 	def __len__(self):
 		return self._n_timesteps
+
+	def __getitem__(self, arg):
+		buf = self._data.iloc[arg]
+		if type(buf) in (pd.DataFrame, pd.Series):
+			return buf.values
+		else:
+			return buf
