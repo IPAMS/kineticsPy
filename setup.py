@@ -12,7 +12,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://team.ipams.uni-wuppertal.de/PTC/kineticsPy",
-    packages=['kineticsPy', 'kineticsPy.analysis', 'kineticsPy.cantera'],
+    packages=['kineticsPy', 'kineticsPy.base', 'kineticsPy.cantera'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
