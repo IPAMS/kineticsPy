@@ -53,6 +53,7 @@ class Trajectory:
 		self._data = pd.DataFrame(data=data, columns=species_names, index=times)
 		self._data.index.name = "Time"
 		self._indexer = TrajectoryIndexer(self)
+		self._attributes = attributes
 
 	@property
 	def number_of_timesteps(self):
@@ -65,6 +66,10 @@ class Trajectory:
 	@property
 	def data(self):
 		return self._data
+
+	@property
+	def attributes(self):
+		return self._attributes
 
 	@property
 	def loc(self):

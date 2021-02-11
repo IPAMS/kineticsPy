@@ -4,6 +4,7 @@ import pandas as pd
 import pandas.testing as pd_test
 import numpy.testing as np_test
 
+
 class TestTrajectory(unittest.TestCase):
 
 	@classmethod
@@ -23,13 +24,14 @@ class TestTrajectory(unittest.TestCase):
 			[20, 1600, 17.9, 0.00001],
 			[22, 3200, 19.9, 0.0000001]
 		]
-		attributes = None
+		attributes = {'temperature':298}
 
 		tra = tr.Trajectory(species_names, times, data_as_lists, attributes)
 		self.assertEqual(tra.number_of_timesteps, 7)
 		self.assertEqual(tra.species_names, species_names)
+		self.assertEqual(tra.attributes['temperature'], 298)
 
-		# test access methods:
+		# test data access methods:
 
 		# low level access with direct numeric indexing:
 		with self.assertRaises(ValueError):
