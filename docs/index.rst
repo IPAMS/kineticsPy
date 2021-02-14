@@ -27,6 +27,12 @@ The current main features are:
 
 .. toctree::
     :maxdepth: 1
+    :caption: User Guide:
+
+    usersguide/trajectory
+
+.. toctree::
+    :maxdepth: 1
     :caption: Package / Module Documentation:
 
     modules/package_base
