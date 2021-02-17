@@ -49,6 +49,7 @@ class TestTrajectory(unittest.TestCase):
 		self.assertEqual(tra.loc['B', 2], 200)
 		np_test.assert_array_almost_equal(tra.loc['B', 2:5].values, [200, 400, 800])
 		np_test.assert_array_almost_equal(tra.loc[['B', 'H2O'], 4].values, [800, 18.5])
+		np_test.assert_array_almost_equal(tra.loc[['B', 'H2O'], 4:6].values, [[800, 18.5],[1600, 17.9]])
 
 
 		# access of the time with real time value:
