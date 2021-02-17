@@ -24,7 +24,7 @@ class TestTrajectory(unittest.TestCase):
 			[20, 1600, 17.9, 0.00001],
 			[22, 3200, 19.9, 0.0000001]
 		]
-		attributes = {'temperature':298}
+		attributes = {'temperature': 298}
 
 		tra = tr.Trajectory(species_names, times, data_as_lists, attributes)
 		self.assertEqual(tra.number_of_timesteps, 7)
@@ -47,9 +47,14 @@ class TestTrajectory(unittest.TestCase):
 		# access of the time dimension with numeric (integer) index: (loc returns pandas objects)
 		self.assertEqual(tra.loc['B'].iloc[2], 200)
 		self.assertEqual(tra.loc['B', 2], 200)
+		np_test.assert_array_almost_equal(tra.loc['B', 2:5].values, [200, 400, 800])
+		np_test.assert_array_almost_equal(tra.loc[['B', 'H2O'], 4].values, [800, 18.5])
+		np_test.assert_array_almost_equal(tra.loc[['B', 'H2O'], 4:6].values, [[800, 18.5],[1600, 17.9]])
+
 
 		# access of the time with real time value:
 		self.assertEqual(tra.loc['B'].loc[5.0], 200)
+		np_test.assert_array_equal(tra.loc[['B', 'H2O']].loc[5.0].values, [200,  19.6])
 
 		# slicing is possible:
 		pd_test.assert_series_equal(
