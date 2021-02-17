@@ -1,0 +1,128 @@
+
+units(length = "cm", time = "s", quantity = "molec", act_energy = "cal/mol")
+
+ideal_gas(name = "ideal_reactor",
+      elements = " H O N ",
+      species = """N2 H2O H3O+ H3O+(H2O) H3O+(H2O)2 H3O+(H2O)3 H3O+(H2O)4  """,
+      reactions = "all",
+      initial_state = state(temperature = 298.15, pressure = 100000)
+)
+
+
+#-------------------------------------------------------------------------------
+#  Species data 
+#-------------------------------------------------------------------------------
+
+species(name = "N2",
+    atoms = " N:2 ",
+    #thermo contains no actual data currently...
+    thermo = const_cp( t0 = 0.0,
+                       h0 = (0.0, 'kcal/mol') ),
+    transport = gas_transport(
+                     geom = "linear",
+                     diam =     2.92,
+                     well_depth =    38.00,
+                     polar =     0.79,
+                     rot_relax =   280.00),
+    note = "none"
+)
+
+species(name = "H2O",
+    atoms = " H:2 O:1 ",
+    #thermo contains no actual data currently...
+    thermo = const_cp( t0 = 0.0,
+                       h0 = (0.0, 'kcal/mol') ),
+    transport = gas_transport(
+                     geom = "linear",
+                     diam =     2.92,
+                     well_depth =    38.00,
+                     polar =     0.79,
+                     rot_relax =   280.00),
+    note = "none"
+)
+
+species(name = "H3O+",
+    atoms = " H:3 O:1 ",
+    #thermo contains no actual data currently...
+    thermo = const_cp( t0 = 0.0,
+                       h0 = (0.0, 'kcal/mol') ),
+    transport = gas_transport(
+                     geom = "linear",
+                     diam =     2.92,
+                     well_depth =    38.00,
+                     polar =     0.79,
+                     rot_relax =   280.00),
+    note = "none"
+)
+
+species(name = "H3O+(H2O)",
+    atoms = " H:5 O:2 ",
+    #thermo contains no actual data currently...
+    thermo = const_cp( t0 = 0.0,
+                       h0 = (0.0, 'kcal/mol') ),
+    transport = gas_transport(
+                     geom = "linear",
+                     diam =     2.92,
+                     well_depth =    38.00,
+                     polar =     0.79,
+                     rot_relax =   280.00),
+    note = "none"
+)
+
+species(name = "H3O+(H2O)2",
+    atoms = " H:7 O:3 ",
+    #thermo contains no actual data currently...
+    thermo = const_cp( t0 = 0.0,
+                       h0 = (0.0, 'kcal/mol') ),
+    transport = gas_transport(
+                     geom = "linear",
+                     diam =     2.92,
+                     well_depth =    38.00,
+                     polar =     0.79,
+                     rot_relax =   280.00),
+    note = "none"
+)
+
+species(name = "H3O+(H2O)3",
+    atoms = " H:9 O:4 ",
+    #thermo contains no actual data currently...
+    thermo = const_cp( t0 = 0.0,
+                       h0 = (0.0, 'kcal/mol') ),
+    transport = gas_transport(
+                     geom = "linear",
+                     diam =     2.92,
+                     well_depth =    38.00,
+                     polar =     0.79,
+                     rot_relax =   280.00),
+    note = "none"
+)
+
+species(name = "H3O+(H2O)4",
+    atoms = " H:11 O:5 ",
+    #thermo contains no actual data currently...
+    thermo = const_cp( t0 = 0.0,
+                       h0 = (0.0, 'kcal/mol') ),
+    transport = gas_transport(
+                     geom = "linear",
+                     diam =     2.92,
+                     well_depth =    38.00,
+                     polar =     0.79,
+                     rot_relax =   280.00),
+    note = "none"
+)
+
+#-------------------------------------------------------------------------------
+#  Reaction data
+#-------------------------------------------------------------------------------
+
+reaction( "H3O+ + H2O + N2 => H3O+(H2O) + N2", [6.98e-29, 0.0, 0])
+reaction( "H3O+(H2O) + N2 => H3O+ + H2O + N2", [4.00e-27, 0.0, 0])
+
+reaction( "H3O+(H2O) + H2O + N2 => H3O+(H2O)2 + N2", [6.98e-29, 0.0, 0]) 
+reaction( "H3O+(H2O)2 + N2 => H3O+(H2O) + H2O + N2", [6.78e-19, 0.0, 0])
+
+reaction( "H3O+(H2O)2 + H2O + N2 => H3O+(H2O)3 + N2", [6.98e-29, 0.0, 0]) 
+reaction( "H3O+(H2O)3 + N2 => H3O+(H2O)2 + H2O + N2", [2.50E-16, 0.0, 0])
+
+reaction( "H3O+(H2O)3 + H2O + N2 => H3O+(H2O)4 + N2", [6.98e-29, 0.0, 0]) 
+reaction( "H3O+(H2O)4 + N2 => H3O+(H2O)3 + H2O + N2", [1.67E-13, 0.0, 0])
