@@ -59,4 +59,24 @@ When multiple species are selected, a `Pandas DataFrame <https://pandas.pydata.o
 Low level indexing
 ------------------
 
-todo: write low level indexing
+Trajectories can be directly indexed and sliced with numerical indices. The trajectory behaves roughly similar to an NumPy Array. 
+
+Accessing a single index, gives a time series for the i-th species. Given a trajectory `tra` containing data of species with the names ``A``, ``B`` and ``H2O``, the time series of `B`  has index 1 and is retrieved by: 
+.. code-block:: python 
+
+    vals = tra[1]
+
+The second parameter to the indexing function selects time steps: 
+
+.. code-block:: python 
+
+    val = tra[1, 3]
+
+gives the value of the species with index 1 for the time step with index 3. 
+
+Slicing of species and time steps is possible: 
+
+.. code-block:: python 
+
+		vals1 = tra[1:4, 1:5] # selects a slice of species and time steps
+		vals2 = tra[:, 0] # selects the values of all species for the first time step
