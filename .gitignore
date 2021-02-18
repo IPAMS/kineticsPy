@@ -96,3 +96,4 @@ ENV/
 
 /.idea/
 /.vscode/
+docs/_templates/
