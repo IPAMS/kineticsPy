@@ -36,6 +36,7 @@ The current main features are:
     :caption: Package / Module Documentation:
 
     modules/package_base
+    modules/package_cantera
 
 ==================
 Indices and tables
