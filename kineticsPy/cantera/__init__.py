@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Analysis and automation module for cantera simulations
+Interface module for cantera simulations
 """
 
-from .analysis import *
+from .simulation import *
