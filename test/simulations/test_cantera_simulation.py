@@ -1,7 +1,11 @@
 import unittest
+import numpy.testing as np_test
+import numpy as np
 import os
+
 # import kineticsPy.base.trajectory as tr
 import kineticsPy.cantera.simulation as sim
+
 
 class TestCanteraAnalysis(unittest.TestCase):
 
@@ -22,3 +26,25 @@ class TestCanteraAnalysis(unittest.TestCase):
 			sim_result.species_names,
 			['N2', 'H2O', 'H3O+', 'H3O+(H2O)', 'H3O+(H2O)2', 'H3O+(H2O)3', 'H3O+(H2O)4'])
 
+		# time steps have to be correct:
+		self.assertEqual(
+			sim_result.number_of_timesteps,
+			10000
+		)
+		self.assertAlmostEqual(
+			sim_result.times.iloc[-1],
+			2e-7 * (10000-1)
+		)
+
+		print(sim_result[0, :].dtype)
+		# simulation result has to be correct / reproducible:
+		np_test.assert_allclose(
+			sim_result[0, :],
+			np.array([2.426859e+19, 2.388641e+16, 9.554562e+11, 0.0, 0.0, 0.0, 0.0], dtype='float64'),
+			rtol=1e-6
+		)
+
+		# additional simulation run attributes have to be correct:
+		self.assertEqual(
+			sim_result.attributes['pressure'], 100000
+		)
