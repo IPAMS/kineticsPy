@@ -67,6 +67,14 @@ class Trajectory:
 		return self._n_timesteps
 
 	@property
+	def times(self):
+		"""
+		Returns the times of the simulated time steps
+		"""
+
+		return self._times
+
+	@property
 	def species_names(self):
 		"""
 		Returns the chemical species names in the kinetic trajectory
