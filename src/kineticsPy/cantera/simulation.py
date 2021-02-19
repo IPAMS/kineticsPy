@@ -76,7 +76,6 @@ def simulate_isobar_adiabatic(input_file, initial_mole_fractions, steps, dt, pre
 	data = np.zeros((steps, n_species))
 
 	for n in range(steps):
-		time += dt
 		sim.advance(time)
 		times[n] = time  # time in s
 		# .concentrations of a ThermoPhase returns concentrations in [kmol/m^3],
@@ -84,6 +83,8 @@ def simulate_isobar_adiabatic(input_file, initial_mole_fractions, steps, dt, pre
 		data[n, :] = reac.thermo[species_names].concentrations * 6.022E20
 		if n % 30000 == 0:
 			print('%5d %10.3e %10.3f %10.3f %14.6e' % (n, sim.time, reac.T, reac.thermo.P, reac.thermo.u))
+
+		time += dt
 
 	sim_attributes = {'pressure': pressure}
 	result = Trajectory(species_names, times, data, sim_attributes)
