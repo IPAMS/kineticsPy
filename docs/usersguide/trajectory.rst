@@ -8,7 +8,9 @@ Result data sets of kinetic simulations are referred to as "kinetic trajectory".
 
 Currently, the concentration time series have to be temporally aligned. There is only one vector of stored times and the the concentration time series for the individual species have to have a valid value for all stored simulation times.
 
-There is currently no notion of unit systems in kineticsPy. This means, that the concentration and time units are not explicitly specified in the Trajectory, which means in turn that the user has to pay attention which units are used in a concrete Trajectory object.
+There is currently no explicit formal notion of concentration units in kineticsPy. This means, that the concentration unit are not explicitly specified in the :py:class:`.Trajectory`, which means in turn that the user has to pay attention which units are used in a concrete :py:class:`.Trajectory` object. Only the name of the concentration unit is retained in the :py:class:`.Trajectory`, so that plotting methods can use it.  
+
+However, the used time unit is implicitly specified as ``time_scaling_factor`` to `seconds`. For example, if this factor is ``1e-6``, the used time unit is microseconds. 
 
 Accessing and indexing Trajectories
 ===================================

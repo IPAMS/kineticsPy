@@ -35,7 +35,8 @@ class Trajectory:
 	The trajectory class is based on numpy and pandas.
 	"""
 
-	def __init__(self, species_names, times, data, attributes=None):
+	def __init__(self, species_names, times, data, attributes=None,
+	             time_scaling_factor=1.0, concentration_unit='molecules/cm^3'):
 		"""
 		Constructs a new kinetic trajectory
 
@@ -48,7 +49,12 @@ class Trajectory:
 		:type data: array_like with shape ``[number of time steps, number of species]``
 		:param attributes: Optional trajectory attributes / meta data describing the trajectory (e.g. temperatures, pressures)
 		:type attributes: dict
-
+		:param time_scaling_factor: scaling factor for the time dimension of the trajectory relative to seconds
+			(e.g. ``1e-6`` means that the time is in micro sectonds)
+		:type time_scaling_factor: float
+		:param concentration_unit: Identifier string for the concentration unit used in the trajectory
+			(mostly for plotting / visualization purposes)
+		:type concentration_unit: str
 		"""
 
 		self._species_names = species_names
@@ -58,6 +64,8 @@ class Trajectory:
 		self._data.index.name = "Time"
 		self._indexer = TrajectoryIndexer(self)
 		self._attributes = attributes
+		self._time_scaling_factor = time_scaling_factor
+		self._concentration_unit = concentration_unit
 
 	@property
 	def number_of_timesteps(self):
@@ -94,6 +102,20 @@ class Trajectory:
 		Returns the attributes
 		"""
 		return self._attributes
+
+	@property
+	def concentration_unit(self):
+		"""
+		Returns the concentration unit string
+		"""
+		return self._concentration_unit
+
+	@property
+	def time_scaling_factor(self):
+		"""
+		Returns the time scaling factor of the trajectory
+		"""
+		return self._time_scaling_factor
 
 	@property
 	def loc(self):

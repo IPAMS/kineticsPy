@@ -26,10 +26,17 @@ class TestTrajectory(unittest.TestCase):
 		]
 		attributes = {'temperature': 298}
 
-		tra = tr.Trajectory(species_names, times, data_as_lists, attributes)
+		tra = tr.Trajectory(
+			species_names, times, data_as_lists, attributes,
+			concentration_unit='mol/m^3',
+			time_scaling_factor=1e-6)
+
 		self.assertEqual(tra.number_of_timesteps, 7)
 		self.assertEqual(tra.species_names, species_names)
 		self.assertEqual(tra.attributes['temperature'], 298)
+		self.assertEqual(tra.concentration_unit, 'mol/m^3')
+		self.assertEqual(tra.time_scaling_factor, 1e-6)
+
 
 		# test data access methods:
 
