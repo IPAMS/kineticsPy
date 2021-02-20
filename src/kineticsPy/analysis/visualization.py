@@ -20,6 +20,9 @@ def plot(trajectory: Trajectory,
 	species_names = trajectory.species_names
 	times_s = trajectory.times * trajectory.time_scaling_factor
 
+	if isinstance(species_conf, str): #  single string means: single species name
+		species_conf = [species_conf]
+
 	if isinstance(species_conf, (list, tuple)):
 		for sp in species_conf:
 			if sp not in species_names:
@@ -31,8 +34,9 @@ def plot(trajectory: Trajectory,
 
 	fig, ax = plt.subplots(figsize=figsize)
 	for species in species_to_plot:
-		ax.plot(times_s, trajectory.loc[species])
+		ax.plot(times_s, trajectory.loc[species], label=species)
 
+	ax.legend()
 	ax.set_xlabel('time (s)')
 	ax.set_ylabel('concentration ('+trajectory.concentration_unit+')')
 

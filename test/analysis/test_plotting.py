@@ -57,9 +57,19 @@ class TestVisualization(unittest.TestCase):
 		plot = vis.plot(sim_result, figsize=(15,5))
 		plt.savefig(os.path.join(self.result_base_path,'watercluster_plot_simple_02.png'))
 
-		# plot a subset trajectory:
+		# plot a subset trajectories:
 		plot = vis.plot(sim_result, ['H3O+', 'H3O+(H2O)', 'H3O+(H2O)2', 'H3O+(H2O)3', 'H3O+(H2O)4'])
 		plt.savefig(os.path.join(self.result_base_path, 'watercluster_plot_simple_03.png'))
+
+		plot = vis.plot(sim_result, ('H3O+', 'H3O+(H2O)') )
+		plt.savefig(os.path.join(self.result_base_path, 'watercluster_plot_simple_04.png'))
+
+		plot = vis.plot(sim_result, 'H3O+')
+		plt.savefig(os.path.join(self.result_base_path, 'watercluster_plot_simple_05.png'))
+
+
+		# plot a subset trajectory with a time range
+		## todo
 
 	def test_customized_time_profile_plot(self):
 		sim_result = self.simple_synthetic_trajectory()
