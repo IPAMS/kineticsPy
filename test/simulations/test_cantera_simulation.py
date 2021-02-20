@@ -11,7 +11,7 @@ class TestCanteraAnalysis(unittest.TestCase):
 
 	@classmethod
 	def setUpClass(cls):
-		data_base_path = os.path.join('testfiles')
+		data_base_path = os.path.join('test_inputs')
 		cls.water_cluster_input = os.path.join(data_base_path, 'WaterCluster_RoomTemp.cti')
 
 	def test_isobar_adiabatic_simulation(self):
