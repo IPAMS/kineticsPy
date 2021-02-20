@@ -4,4 +4,5 @@
 Simulation analysis / visualization
 """
 
-from .simulation import *
+from .visualization import *
+from .analysis import *
