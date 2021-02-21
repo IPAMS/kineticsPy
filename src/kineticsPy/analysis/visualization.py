@@ -13,7 +13,8 @@ from kineticsPy.base.trajectory import Trajectory
 def plot(trajectory: Trajectory,
          species_conf=None,
          time_steps=None,
-         figsize=None):
+         figsize=None,
+         legend='best'):
 	"""
 	Generates a concentration / time profile plot for a trajectory
 
@@ -91,7 +92,9 @@ def plot(trajectory: Trajectory,
 				trajectory.loc[species, time_steps_to_plot],
 				label=species)
 
-	ax.legend()
+	if legend is not None and legend is not 'off':
+		ax.legend(loc=legend)
+
 	ax.set_xlabel('time (s)')
 	ax.set_ylabel('concentration (' + trajectory.concentration_unit + ')')
 

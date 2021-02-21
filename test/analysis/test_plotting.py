@@ -92,7 +92,7 @@ class TestVisualization(unittest.TestCase):
 		with self.assertRaises(ValueError):
 			vis.plot(sim_result, time_steps=(1000, 10001))
 
-	def test_concentration_plot_with_species_line_specifications(self):
+	def test_concentration_plots_with_species_line_specifications(self):
 		sim_result = self.simple_synthetic_trajectory()
 
 		species_line_config_1 = [
@@ -101,5 +101,13 @@ class TestVisualization(unittest.TestCase):
 			['H2O', 'o-', '#0022CC']
 		]
 
-		vis.plot(sim_result, species_line_config_1, 100)
+		species_line_config_2 = (
+			('Cl1', '.-', 'grey'),
+			('Cl2', '--', '#AAAA22')
+		)
+
+		vis.plot(sim_result, species_line_config_1, 100, legend='upper left')
 		plt.savefig(os.path.join(self.result_base_path, 'synthetic_data_plot_customized_01.png'))
+
+		vis.plot(sim_result, species_line_config_2, 100, legend='off')
+		plt.savefig(os.path.join(self.result_base_path, 'synthetic_data_plot_customized_02.png'))
