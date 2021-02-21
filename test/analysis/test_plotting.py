@@ -23,7 +23,7 @@ class TestVisualization(unittest.TestCase):
 		sim_result = sim.simulate_isobar_adiabatic(
 			cls.water_cluster_input,
 			'H2O:2.5e+14, N2:2.54e+17, H3O+:1e+10',
-			10000, 2e-7, 100000)
+			10000, 2e-9, 100000)
 
 		return sim_result
 
@@ -45,7 +45,7 @@ class TestVisualization(unittest.TestCase):
 
 		return tra
 
-	def test_simple_concentration_time_profile_plot(self):
+	def test_concentration_plots_with_simulation(self):
 		sim_result = self.water_cluster_simulation()
 
 		# plot full trajectory:
@@ -57,7 +57,7 @@ class TestVisualization(unittest.TestCase):
 		plot = vis.plot(sim_result, figsize=(15,5))
 		plt.savefig(os.path.join(self.result_base_path,'watercluster_plot_simple_02.png'))
 
-		# plot a subset trajectories:
+		# simple species selection:
 		plot = vis.plot(sim_result, ['H3O+', 'H3O+(H2O)', 'H3O+(H2O)2', 'H3O+(H2O)3', 'H3O+(H2O)4'])
 		plt.savefig(os.path.join(self.result_base_path, 'watercluster_plot_simple_03.png'))
 
@@ -68,10 +68,28 @@ class TestVisualization(unittest.TestCase):
 		plt.savefig(os.path.join(self.result_base_path, 'watercluster_plot_simple_05.png'))
 
 
-		# plot a subset trajectory with a time range
-		## todo
+		# time step ranges -------------- :
 
-	def test_customized_time_profile_plot(self):
+		# plotting up to end time step:
+		plot = vis.plot(sim_result, ('H3O+', 'H3O+(H2O)', 'H3O+(H2O)2', 'H3O+(H2O)3'), 30)
+		plt.savefig(os.path.join(self.result_base_path, 'watercluster_plot_simple_06.png'))
+
+		# plotting of time step range:
+		plot = vis.plot(sim_result, ('H3O+', 'H3O+(H2O)', 'H3O+(H2O)2', 'H3O+(H2O)3'), (50, 100))
+		plt.savefig(os.path.join(self.result_base_path, 'watercluster_plot_simple_07.png'))
+
+		with self.assertRaises(ValueError):
+			vis.plot(sim_result, time_steps=(100, 50))
+
+		with self.assertRaises(ValueError):
+			vis.plot(sim_result, time_steps=(-5, 1000))
+
+		with self.assertRaises(ValueError):
+			vis.plot(sim_result, time_steps=(1000, 10001))
+
+
+
+	def test_concentration_plots_with_synthetic_data(self):
 		sim_result = self.simple_synthetic_trajectory()
 
 		plot = vis.plot(sim_result)
