@@ -22,16 +22,39 @@ def plot(trajectory: Trajectory,
 	species_names = trajectory.species_names
 	times_s = trajectory.times * trajectory.time_scaling_factor
 
+	style_conf_present = False  # flag if a complex species / line style configuration is present
 	if isinstance(species_conf, str):  # single string means: single species name
 		species_conf = [species_conf]
 
-	if isinstance(species_conf, (list, tuple)):
-		for sp in species_conf:
-			if sp not in species_names:
-				raise ValueError('Species ' + sp + ' is not found in trajectory.')
-		species_to_plot = species_conf
-	else:
+	if species_conf is None:
 		species_to_plot = species_names
+	elif isinstance(species_conf, (list, tuple)):
+		#  check which types are in the elements of the given list or tuple:
+		#  if all elements are string: We have a pure species identifier list
+		#  if all elements are themselves lists or tuples: we have comples species / linestyle configuration
+
+		only_strings = True
+		only_lists = True
+		for sp in species_conf:
+			if not isinstance(sp, str):
+				only_strings = False
+			if not isinstance(sp, (list, tuple)):
+				only_lists = False
+
+		if only_strings:  # we have a pure species id list
+			for sp in species_conf:
+				if sp not in species_names:
+					raise ValueError('Species ' + sp + ' is not found in trajectory.')
+			species_to_plot = species_conf
+		elif only_lists:  # we have a species / line style configuration
+			if not all(len(sp) == 3 for sp in species_conf):
+				raise ValueError('Species / line style configurations have to have three elements '
+				                 '(Species, line style, color)')
+
+			style_conf_present = True
+	else:
+		raise ValueError('Illegal type for species_conf')
+
 
 	if time_steps is None:
 		time_steps_to_plot = slice(0, trajectory.number_of_timesteps)
@@ -54,13 +77,22 @@ def plot(trajectory: Trajectory,
 
 		time_steps_to_plot = slice(time_steps[0], time_steps[1])
 
-
 	fig, ax = plt.subplots(figsize=figsize)
-	for species in species_to_plot:
-		ax.plot(
-			times_s.iloc[time_steps_to_plot],
-			trajectory.loc[species, time_steps_to_plot],
-			label=species)
+
+	if style_conf_present:
+		for sp in species_conf:
+			ax.plot(
+				times_s.iloc[time_steps_to_plot],
+				trajectory.loc[sp[0], time_steps_to_plot],
+				sp[1],
+				color=sp[2],
+				label=sp[0])
+	else:
+		for species in species_to_plot:
+			ax.plot(
+				times_s.iloc[time_steps_to_plot],
+				trajectory.loc[species, time_steps_to_plot],
+				label=species)
 
 	ax.legend()
 	ax.set_xlabel('time (s)')

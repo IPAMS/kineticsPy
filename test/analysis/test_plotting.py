@@ -92,13 +92,14 @@ class TestVisualization(unittest.TestCase):
 		with self.assertRaises(ValueError):
 			vis.plot(sim_result, time_steps=(1000, 10001))
 
-
-
-	def test_concentration_plots_with_synthetic_data(self):
+	def test_concentration_plot_with_species_line_specifications(self):
 		sim_result = self.simple_synthetic_trajectory()
 
-		plot = vis.plot(sim_result)
-		plt.savefig(os.path.join(self.result_base_path,'watercluster_plot_customized_01.png'))
+		species_line_config_1 = [
+			['Cl1', 'x-', 'red'],
+			['Cl2', '--', '#112222'],
+			['H2O', 'o-', '#0022CC']
+		]
 
-	def test_customized_time_profile_plot_with_line_specifications(self):
-		pass
+		vis.plot(sim_result, species_line_config_1, 100)
+		plt.savefig(os.path.join(self.result_base_path, 'synthetic_data_plot_customized_01.png'))
