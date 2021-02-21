@@ -67,6 +67,11 @@ class TestVisualization(unittest.TestCase):
 		plot = vis.plot(sim_result, 'H3O+')
 		plt.savefig(os.path.join(self.result_base_path, 'watercluster_plot_simple_05.png'))
 
+		with self.assertRaises(ValueError):
+			vis.plot(sim_result, 'I am not a species')
+
+		with self.assertRaises(ValueError):
+			vis.plot(sim_result, ['H3O+', 'I am not a species'])
 
 		# time step ranges -------------- :
 
