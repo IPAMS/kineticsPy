@@ -97,3 +97,6 @@ ENV/
 /.idea/
 /.vscode/
 docs/_templates/
+
+# (Temporary) test files
+/test/test_results/
