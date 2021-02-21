@@ -119,6 +119,7 @@ A lower and an upper bound of the the plotted time range is selected by passing 
     :alt: Water cluster trajectory with lower and upper bound selected
 
 
+-------------------------------------------
 Custom plot line / symbol styles and colors
 -------------------------------------------
 
@@ -137,3 +138,43 @@ The drawing style and the color of the individual plot lines can be customized b
 .. image:: images/concentration_plot_line_styles_01.svg
     :alt: Water cluster trajectory with custom line / symbol styles
 
+
+------
+Legend
+------
+
+By default a legend of the species names and their line styles is presented in the plot. The rendering of the legend can be controlled with the ``legend`` named parameter of the plot function. 
+
+The legend can be switched off by passing ``off``  as legend parameter:
+
+
+.. code-block:: python 
+
+    kpy.plot(cl_sim_result, legend='off')
+
+.. image:: images/concentration_plot_additional_parameters_01.svg
+    :alt: Water cluster trajectory without legend
+
+
+By default, the legend location is optimized not to intersect with plot lines (``best`` legend location as defined by matplotlib). The legend location can be controlled by passing a legend position identifier, as defined by matplotlib (see `matplotlib legend documentation <https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.legend.html#matplotlib.axes.Axes.legend>`_ for details) as legend parameter:
+
+.. code-block:: python 
+
+    kpy.plot(cl_sim_result, legend='upper left')
+
+.. image:: images/concentration_plot_additional_parameters_02.svg
+    :alt: Water cluster trajectory with custom legend location
+
+
+---------
+Plot size
+---------
+
+The size of the plot figure is set with the ``figsize`` named parameter, which takes a list or tuple of a width and a height: 
+
+.. code-block:: python 
+
+    kpy.plot(cl_sim_result, figsize=(10,4))
+
+.. image:: images/concentration_plot_additional_parameters_03.svg
+    :alt: Water cluster trajectory with custom width and height
