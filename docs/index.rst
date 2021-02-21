@@ -30,6 +30,7 @@ The current main features are:
     :caption: User Guide:
 
     usersguide/trajectory
+    usersguide/cantera_simulation
     usersguide/visualization
 
 .. toctree::
