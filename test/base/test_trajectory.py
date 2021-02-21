@@ -1,5 +1,5 @@
 import unittest
-import kineticsPy.base.trajectory as tr
+import kineticsPy as kpy
 import pandas as pd
 import pandas.testing as pd_test
 import numpy.testing as np_test
@@ -26,7 +26,7 @@ class TestTrajectory(unittest.TestCase):
 		]
 		attributes = {'temperature': 298}
 
-		tra = tr.Trajectory(
+		tra = kpy.Trajectory(
 			species_names, times, data_as_lists, attributes,
 			concentration_unit='mol/m^3',
 			time_scaling_factor=1e-6)

@@ -4,11 +4,10 @@
 Cantera simulation result plotting / visualization
 """
 
-import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 from kineticsPy.base.trajectory import Trajectory
 
+__all__ = ['plot']
 
 def plot(trajectory: Trajectory,
          species_conf=None,
