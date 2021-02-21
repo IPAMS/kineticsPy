@@ -15,15 +15,18 @@ class TrajectoryIndexer:
 		self._tajectory = parent_trajectory
 
 	def __getitem__(self, arg):
-		if len(arg) == 1:
-			return self._tajectory.data[arg[0]]
-		elif len(arg) == 2:
-			if type(arg[0]) == str and type(arg[1]) == str:  # two species names given
-				return self._tajectory.data[arg]
+		try:
+			if len(arg) == 1:
+				return self._tajectory.data[arg[0]]
+			elif len(arg) == 2:
+				if type(arg[0]) == str and type(arg[1]) == str:  # two species names given
+					return self._tajectory.data[arg]
+				else:
+					return self._tajectory.data[arg[0]].iloc[arg[1]]
 			else:
-				return self._tajectory.data[arg[0]].iloc[arg[1]]
-		else:
-			return self._tajectory.data[arg]
+				return self._tajectory.data[arg]
+		except KeyError as ke:
+			raise ValueError('Species ' + str(ke) + ' not found in trajectory')
 
 
 class Trajectory:

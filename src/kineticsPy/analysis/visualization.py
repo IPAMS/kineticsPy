@@ -42,9 +42,6 @@ def plot(trajectory: Trajectory,
 				only_lists = False
 
 		if only_strings:  # we have a pure species id list
-			for sp in species_conf:
-				if sp not in species_names:
-					raise ValueError('Species ' + sp + ' is not found in trajectory.')
 			species_to_plot = species_conf
 		elif only_lists:  # we have a species / line style configuration
 			if not all(len(sp) == 3 for sp in species_conf):

@@ -51,6 +51,9 @@ class TestTrajectory(unittest.TestCase):
 
 		# high level access with "loc":
 
+		with self.assertRaises(ValueError):
+			tra.loc['i am not a species']
+
 		# access of the time dimension with numeric (integer) index: (loc returns pandas objects)
 		self.assertEqual(tra.loc['B'].iloc[2], 200)
 		self.assertEqual(tra.loc['B', 2], 200)
@@ -67,5 +70,4 @@ class TestTrajectory(unittest.TestCase):
 		pd_test.assert_series_equal(
 			tra.loc['A', 2:4],
 			pd.Series([14, 16], name='A', index=pd.Index([5.0, 7.5], name='Time')))
-
 
