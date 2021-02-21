@@ -30,6 +30,7 @@ The current main features are:
     :caption: User Guide:
 
     usersguide/trajectory
+    usersguide/visualization
 
 .. toctree::
     :maxdepth: 1
