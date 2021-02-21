@@ -19,8 +19,7 @@ Concentration-time profiles can be plotted as line plots with :py:func:`kinetics
 Simple full plot of a trajectory 
 --------------------------------
 
-
-Most simply, it takes a kinetic trajectory and returns a matplotlib plot of the trajectory:
+The plot function becomes available by importing ``kineticsPy``. Most simply, it takes a kinetic trajectory and returns a matplotlib plot of the trajectory:
 
 .. code-block:: python
 
@@ -34,3 +33,43 @@ yields for example
 .. image:: images/concentration_plot_base_01.svg
     :alt: Simple line plot of an example trajectory
 
+
+Selection of chemical species
+-----------------------------
+
+Chemical species can be selected by passing a list of identifier strings to the plot function as second parameter. For example, the selection of two species (``Cl2`` and ``H2O``): 
+
+.. code-block:: python
+
+    kpy.plot(sim_result, ['Cl2', 'H2O']);
+
+
+produces a plot with only two concentration profiles: 
+
+.. image:: images/concentration_plot_base_02.svg
+    :alt: Simple line plot of an example trajectory
+
+
+a tuple instead of a list is also valid:
+
+.. code-block:: python
+
+    kpy.plot(sim_result, ('Cl2', 'H2O'));
+
+
+It is also possible to use a single identifier instead of a list:
+
+.. code-block:: python
+
+    kpy.plot(sim_result, 'Cl2');
+
+.. image:: images/concentration_plot_base_03.svg
+    :alt: Simple line plot of an example trajectory
+
+
+Selection of time step range
+----------------------------
+
+
+Custom plot line styles
+-----------------------
