@@ -10,7 +10,8 @@ from kineticsPy.base.trajectory import Trajectory
 
 __all__ = ["simulate_isobar_adiabatic"]
 
-def simulate_isobar_adiabatic(input_file, initial_mole_fractions, steps, dt, pressure):
+def simulate_isobar_adiabatic(input_file, initial_mole_fractions, steps, dt, pressure,
+                              rtol=None):
 	"""
 	Constant-pressure, adiabatic kinetics simulation with Cantera: 
 	Simulation of chemical kinetics in an ideally stirred, isobar and adiabatic reactor.
@@ -45,6 +46,8 @@ def simulate_isobar_adiabatic(input_file, initial_mole_fractions, steps, dt, pre
 	:type dt: float
 	:param pressure: Background pressure in the reaction vessel
 	:type pressure: float
+	:param rtol: Relative tolerance passed to cantera solver
+	:type rtol: float
 	:return: :class:`kineticsPy.base.trajectory.Trajectory` (a kinetic trajectory object)
 	"""
 
@@ -71,6 +74,8 @@ def simulate_isobar_adiabatic(input_file, initial_mole_fractions, steps, dt, pre
 
 	# Initialize simulation.
 	sim = ct.ReactorNet([reac])
+	if rtol:
+		sim.rtol = rtol
 	time = 0.0
 	times = np.zeros(steps)
 	data = np.zeros((steps, n_species))
