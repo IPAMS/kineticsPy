@@ -19,7 +19,6 @@ class TestVisualization(unittest.TestCase):
 		plot = kpy.plot(sim_result)
 		plt.savefig(os.path.join(self.result_base_path,'watercluster_plot_simple_01.png'))
 
-
 		# plot full trajectory:
 		plot = kpy.plot(sim_result, figsize=(15,5))
 		plt.savefig(os.path.join(self.result_base_path,'watercluster_plot_simple_02.png'))
@@ -82,5 +81,9 @@ class TestVisualization(unittest.TestCase):
 	def test_equilibrium_state_plot(self):
 		sim_result = util.water_cluster_simulation()
 
-		kpy.plot_equilibrium_state(sim_result)
+		kpy.plot_equilibrium_state(sim_result, reltol=0.02)
 		plt.savefig(os.path.join(self.result_base_path, 'water_cluster_equilibrium_plot_01.png'))
+
+		kpy.plot_equilibrium_state(sim_result, reltol=0.02, log=True)
+		plt.savefig(os.path.join(self.result_base_path, 'water_cluster_equilibrium_plot_02.png'))
+

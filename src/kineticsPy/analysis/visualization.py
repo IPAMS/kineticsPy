@@ -156,19 +156,23 @@ def plot(trajectory: Trajectory, species_conf=None, time_steps=None,
 
 def plot_equilibrium_state(trajectory: Trajectory,
                            time_steps=100,
+                           reltol=0.01,
                            figsize=None,
                            legend='best',
                            log=False):
+	"""
+	Plots the concentration in the final equilibrium state of a trajectory
+	"""
 
 	species = trajectory.species_names
-	equlibrium_data = analysis.equilibrium_state(trajectory, time_steps=time_steps)
+	equilibrium_data = analysis.equilibrium_state(trajectory, time_steps=time_steps, reltol=reltol)
 	fig, ax = plt.subplots(figsize=figsize)
 
 
 	x = np.arange(len(species))
 
 	for i in range(len(species)):
-		ax.bar(x[i], equlibrium_data[species[i]], label=species[i])
+		ax.bar(x[i], equilibrium_data[species[i]], label=species[i])
 
 	if log:
 		ax.set_yscale('log')
