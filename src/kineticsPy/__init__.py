@@ -5,6 +5,9 @@ Analysis, visualization, automation and helper modules for chemical kinetics sim
 """
 
 from . import base
+from . import analysis
 from . import cantera
 
+from .base import *
+from .analysis import *
 #__all__ = ['cantera']

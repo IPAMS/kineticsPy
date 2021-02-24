@@ -2,8 +2,6 @@ import unittest
 import numpy.testing as np_test
 import numpy as np
 import os
-
-# import kineticsPy.base.trajectory as tr
 import kineticsPy.cantera.simulation as sim
 
 

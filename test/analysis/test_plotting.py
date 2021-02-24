@@ -1,7 +1,7 @@
 import unittest
 import os
 import matplotlib.pyplot as plt
-import kineticsPy.analysis.visualization as vis
+import kineticsPy as kpy
 from . import util
 
 
@@ -17,48 +17,48 @@ class TestVisualization(unittest.TestCase):
 		sim_result = util.water_cluster_simulation()
 
 		# plot full trajectory:
-		plot = vis.plot(sim_result)
+		plot = kpy.plot(sim_result)
 		plt.savefig(os.path.join(self.result_base_path,'watercluster_plot_simple_01.png'))
 
 
 		# plot full trajectory:
-		plot = vis.plot(sim_result, figsize=(15,5))
+		plot = kpy.plot(sim_result, figsize=(15,5))
 		plt.savefig(os.path.join(self.result_base_path,'watercluster_plot_simple_02.png'))
 
 		# simple species selection:
-		plot = vis.plot(sim_result, ['H3O+', 'H3O+(H2O)', 'H3O+(H2O)2', 'H3O+(H2O)3', 'H3O+(H2O)4'])
+		plot = kpy.plot(sim_result, ['H3O+', 'H3O+(H2O)', 'H3O+(H2O)2', 'H3O+(H2O)3', 'H3O+(H2O)4'])
 		plt.savefig(os.path.join(self.result_base_path, 'watercluster_plot_simple_03.png'))
 
-		plot = vis.plot(sim_result, ('H3O+', 'H3O+(H2O)') )
+		plot = kpy.plot(sim_result, ('H3O+', 'H3O+(H2O)') )
 		plt.savefig(os.path.join(self.result_base_path, 'watercluster_plot_simple_04.png'))
 
-		plot = vis.plot(sim_result, 'H3O+')
+		plot = kpy.plot(sim_result, 'H3O+')
 		plt.savefig(os.path.join(self.result_base_path, 'watercluster_plot_simple_05.png'))
 
 		with self.assertRaises(ValueError):
-			vis.plot(sim_result, 'I am not a species')
+			kpy.plot(sim_result, 'I am not a species')
 
 		with self.assertRaises(ValueError):
-			vis.plot(sim_result, ['H3O+', 'I am not a species'])
+			kpy.plot(sim_result, ['H3O+', 'I am not a species'])
 
 		# time step ranges -------------- :
 
 		# plotting up to end time step:
-		plot = vis.plot(sim_result, ('H3O+', 'H3O+(H2O)', 'H3O+(H2O)2', 'H3O+(H2O)3'), 30)
+		plot = kpy.plot(sim_result, ('H3O+', 'H3O+(H2O)', 'H3O+(H2O)2', 'H3O+(H2O)3'), 30)
 		plt.savefig(os.path.join(self.result_base_path, 'watercluster_plot_simple_06.png'))
 
 		# plotting of time step range:
-		plot = vis.plot(sim_result, ('H3O+', 'H3O+(H2O)', 'H3O+(H2O)2', 'H3O+(H2O)3'), (50, 100))
+		plot = kpy.plot(sim_result, ('H3O+', 'H3O+(H2O)', 'H3O+(H2O)2', 'H3O+(H2O)3'), (50, 100))
 		plt.savefig(os.path.join(self.result_base_path, 'watercluster_plot_simple_07.png'))
 
 		with self.assertRaises(ValueError):
-			vis.plot(sim_result, time_steps=(100, 50))
+			kpy.plot(sim_result, time_steps=(100, 50))
 
 		with self.assertRaises(ValueError):
-			vis.plot(sim_result, time_steps=(-5, 1000))
+			kpy.plot(sim_result, time_steps=(-5, 1000))
 
 		with self.assertRaises(ValueError):
-			vis.plot(sim_result, time_steps=(1000, 10001))
+			kpy.plot(sim_result, time_steps=(1000, 10001))
 
 	def test_concentration_plots_with_species_line_specifications(self):
 		sim_result = util.simple_synthetic_trajectory()
@@ -74,8 +74,8 @@ class TestVisualization(unittest.TestCase):
 			('Cl2', '--', '#AAAA22')
 		)
 
-		vis.plot(sim_result, species_line_config_1, 100, legend='upper left')
+		kpy.plot(sim_result, species_line_config_1, 100, legend='upper left')
 		plt.savefig(os.path.join(self.result_base_path, 'synthetic_data_plot_customized_01.png'))
 
-		vis.plot(sim_result, species_line_config_2, 100, legend='off')
+		kpy.plot(sim_result, species_line_config_2, 100, legend='off')
 		plt.savefig(os.path.join(self.result_base_path, 'synthetic_data_plot_customized_02.png'))

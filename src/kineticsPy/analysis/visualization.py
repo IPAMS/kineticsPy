@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Cantera simulation result plotting / visualization
+Kinetic simulation result plotting / visualization
 """
 
 import numpy as np
