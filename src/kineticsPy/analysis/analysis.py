@@ -16,6 +16,22 @@ def equilibrium_state(trajectory, time_steps=100, reltol=0.01):
 	:param reltol:
 	"""
 
+	if time_steps>=trajectory.number_of_timesteps:
+		raise ValueError('Number of time steps to average ('+str(time_steps)+') is larger than number '
+		                 'of time steps in trajectory '+str(trajectory.number_of_timesteps))
+
 	dat_segment = trajectory[-time_steps:-1, :]
+
 	averages = dat_segment.mean(axis=0)
+
+	# calculate relative differences for estimating if the trajectory has converged:
+	max = dat_segment.max(axis=0)
+	min = dat_segment.min(axis=0)
+	rel_diff = ((max-min) / averages).abs()
+	for sp in trajectory.species_names:
+		if rel_diff[sp] > reltol:
+			raise ValueError('Maximum relative difference '+ str(rel_diff[sp]) + 'of species '+ sp+
+		                     ' is larger than allowed tolerance '+ str(reltol))
+
+
 	return averages

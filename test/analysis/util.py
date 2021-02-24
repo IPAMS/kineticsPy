@@ -4,14 +4,15 @@ import kineticsPy as kpy
 import kineticsPy.cantera.simulation as sim
 
 
-def water_cluster_simulation(time_steps=10000):
+def water_cluster_simulation(time_steps=10000, rtol=None):
 	data_base_path = os.path.join('test_inputs')
 	water_cluster_input = os.path.join(data_base_path, 'WaterCluster_RoomTemp.cti')
 
 	sim_result = sim.simulate_isobar_adiabatic(
 		water_cluster_input,
 		'H2O:2.5e+14, N2:2.54e+17, H3O+:1e+10',
-		10000, 2e-9, 100000)
+		time_steps, 2e-9, 100000,
+		rtol=rtol)
 
 	return sim_result
 
