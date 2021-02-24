@@ -5,22 +5,73 @@ Kinetic simulation result plotting / visualization
 """
 
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 from kineticsPy.base.trajectory import Trajectory
 import kineticsPy.analysis as analysis
 
+__all__ = ['plot', 'plot_equilibrium_state']
+
 plt.style.use('ggplot')
 
-def plot(trajectory: Trajectory,
-         species_conf=None,
-         time_steps=None,
-         figsize=None,
-         legend='best'):
-	"""
-	Generates a concentration / time profile plot for a trajectory
 
-	:param trajectory: trajectory The kinetic trajectory to plot
+def plot(trajectory: Trajectory, species_conf=None, time_steps=None,
+         figsize=None, legend='best'):
+	"""
+	Generates a concentration / time profile plot for a trajectory.
+
+	**Chemical species selection**
+
+	Passing a single chemical species identifier or a list of chemical identifiers to ``species_conf`` selects
+	chemical species to plot:
+
+	.. code-block:: python
+
+		plot(trajectory, 'H2O')  # will plot Water (H2O)
+		plot(trajectory, ['H2O', 'N2'])  # will plot Water (H2O) and Nitrogen (N2)
+
+	**Custom line styles**
+
+	Passing a list of line chemical species with plot / line style configurations to ``species_conf`` allows to use
+	custom line styles for the plot.
+
+	The line style entries are a species name, a matplotlib format string and a color accepted by matplotlib:
+
+	.. code-block:: python
+
+		species_conf = [
+			('H2O', '.-', 'red'),
+			('N2', ':-', '#AABB22')
+		]
+
+		plot(trajectory, species_conf)
+
+
+	**Time range selection**
+
+	``time_steps`` allows to specify the plotted time steps.
+
+	* A single integer defines the last time step to be plotted. The trajectory will be plotted from the beginning
+	  to the specified upper time step.
+	* A tuple of two time step indices ``(lower, upper)`` defines a lower and an upper boundary of the time step
+	  range to be plotted.
+
+	.. code-block:: python
+
+		plot(trajectory, time_steps=150)  # will plot time steps up to 150
+		plot(trajectory, time_steps=(100, 200) )  # will plot time steps between 100 and 200
+
+
+	:param trajectory: The kinetic trajectory to plot
+	:param species_conf: Selection of chemical species with optional line style configuration (see above for details)
+	:type species_conf: list of str or list of species / line style definitions
+	:param time_steps: Time step range selection (see above for details)
+	:type time_steps: int or tuple of two int
+	:param figsize: Size of the plot figure, a tuple with (wdith, height)
+	:type figsize: tuple of two floats
+	:param legend: Legend configuration / location. 'off' deactivates the legend. Matplotlib legend location string
+		fixes the legend on the specfied location (see matplotlb documentation for details)
+	:type legend: str
+	:returns: A matplotlib figure with the plot
 	"""
 	species_names = trajectory.species_names
 	times_s = trajectory.times * trajectory.time_scaling_factor
@@ -94,7 +145,7 @@ def plot(trajectory: Trajectory,
 				trajectory.loc[species, time_steps_to_plot],
 				label=species)
 
-	if legend is not None and legend is not 'off':
+	if legend is not None and legend != 'off':
 		ax.legend(loc=legend)
 
 	ax.set_xlabel('time (s)')

@@ -64,6 +64,7 @@ Low level indexing
 Trajectories can be directly indexed and sliced with numerical indices. The trajectory behaves roughly similar to an NumPy Array. 
 
 Accessing a single index, gives a time series for the i-th species. Given a trajectory `tra` containing data of species with the names ``A``, ``B`` and ``H2O``, the time series of `B`  has index 1 and is retrieved by: 
+
 .. code-block:: python 
 
     vals = tra[1]

@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import kineticsPy as kpy
 from . import util
 
-
 class TestVisualization(unittest.TestCase):
 
 	@classmethod

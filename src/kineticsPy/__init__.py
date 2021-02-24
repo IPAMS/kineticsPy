@@ -10,4 +10,5 @@ from . import cantera
 
 from .base import *
 from .analysis import *
-#__all__ = ['cantera']
+
+__all__ = ['base', 'cantera', 'analysis']
