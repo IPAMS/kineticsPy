@@ -8,7 +8,9 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from kineticsPy.base.trajectory import Trajectory
+import kineticsPy.analysis as analysis
 
+plt.style.use('ggplot')
 
 def plot(trajectory: Trajectory,
          species_conf=None,
@@ -18,7 +20,7 @@ def plot(trajectory: Trajectory,
 	"""
 	Generates a concentration / time profile plot for a trajectory
 
-	@param trajectory The kinetic trajectory to plot
+	:param trajectory: trajectory The kinetic trajectory to plot
 	"""
 	species_names = trajectory.species_names
 	times_s = trajectory.times * trajectory.time_scaling_factor
@@ -97,5 +99,35 @@ def plot(trajectory: Trajectory,
 
 	ax.set_xlabel('time (s)')
 	ax.set_ylabel('concentration (' + trajectory.concentration_unit + ')')
+
+	return fig
+
+
+def plot_equilibrium_state(trajectory: Trajectory,
+                           time_steps=100,
+                           figsize=None,
+                           legend='best',
+                           log=False):
+
+	species = trajectory.species_names
+	equlibrium_data = analysis.equilibrium_state(trajectory, time_steps=time_steps)
+	fig, ax = plt.subplots(figsize=figsize)
+
+
+	x = np.arange(len(species))
+
+	for i in range(len(species)):
+		ax.bar(x[i], equlibrium_data[species[i]], label=species[i])
+
+	if log:
+		ax.set_yscale('log')
+
+	ax.set_xticks(x)
+	ax.set_xticklabels(species)
+	ax.tick_params(axis="x", rotation=90)
+	if legend is not None and legend is not 'off':
+		ax.legend(loc=legend)
+
+	fig.tight_layout()
 
 	return fig

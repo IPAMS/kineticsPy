@@ -79,3 +79,9 @@ class TestVisualization(unittest.TestCase):
 
 		kpy.plot(sim_result, species_line_config_2, 100, legend='off')
 		plt.savefig(os.path.join(self.result_base_path, 'synthetic_data_plot_customized_02.png'))
+
+	def test_equilibrium_state_plot(self):
+		sim_result = util.water_cluster_simulation()
+
+		kpy.plot_equilibrium_state(sim_result)
+		plt.savefig(os.path.join(self.result_base_path, 'water_cluster_equilibrium_plot_01.png'))
