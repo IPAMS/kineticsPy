@@ -178,3 +178,23 @@ The size of the plot figure is set with the ``figsize`` named parameter, which t
 
 .. image:: images/concentration_plot_additional_parameters_03.svg
     :alt: Water cluster trajectory with custom width and height
+
+
+
+Equilibrium concentration plots
+===============================
+
+Simple plots of an equilibrium state of a trajectory can be created with :py:func:`kineticsPy.analysis.visualization.plot_equilibrium_state`. This function takes a kinetic trajectory and creates a simple bar plot of the equilibrium concentrations, by averaging the concentrations in the last time steps of a kinetic trajectory:
+
+.. code-block:: python 
+
+    kpy.plot_equilibrium_state(cl_sim_result, log=True)
+
+.. image:: images/equilibrium_state_plot_01.svg
+    :alt: Equilibrium state concentration plot
+
+The ``log`` option switches to logarithmic scaling of the concentration axis. The ``time_steps`` sets how many time steps at the end of the trajectory are considered for the averaging. If the relative fluctuation of a chemical species in the considered time segment is larger than ``reltol``, the trajectory is considered not to be converged and an exception will be risen: 
+
+.. code-block:: python 
+
+    kpy.plot_equilibrium_state(cl_sim_result, time_steps=200, reltol=0.005)

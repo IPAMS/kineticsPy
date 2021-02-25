@@ -196,6 +196,7 @@ def plot_equilibrium_state(trajectory: Trajectory,
 	ax.set_xticks(x)
 	ax.set_xticklabels(species)
 	ax.tick_params(axis="x", rotation=90)
+	ax.set_ylabel('concentration (' + trajectory.concentration_unit + ')')
 	if legend is not None and legend is not 'off':
 		ax.legend(loc=legend)
 
