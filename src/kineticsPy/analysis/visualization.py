@@ -66,7 +66,7 @@ def plot(trajectory: Trajectory, species_conf=None, time_steps=None,
 	:type species_conf: list of str or list of species / line style definitions
 	:param time_steps: Time step range selection (see above for details)
 	:type time_steps: int or tuple of two int
-	:param figsize: Size of the plot figure, a tuple with (wdith, height)
+	:param figsize: Size of the plot figure, a tuple with (width, height)
 	:type figsize: tuple of two floats
 	:param legend: Legend configuration / location. 'off' deactivates the legend. Matplotlib legend location string
 		fixes the legend on the specfied location (see matplotlb documentation for details)
@@ -161,13 +161,29 @@ def plot_equilibrium_state(trajectory: Trajectory,
                            legend='best',
                            log=False):
 	"""
-	Plots the concentration in the final equilibrium state of a trajectory
+	Plots the concentration in the final equilibrium state of a trajectory. The equilibrium concentrations are
+	assumed as the average concentations of the chemical species in the trajectory in the final time steps
+
+	:param trajectory: The kinetic trajectory to analyze and plot
+	:type trajectory: kineticPy.base.Trajectory
+	:param time_steps: The number of time steps at the end of the trajectory to consider
+	:type time_steps: int
+	:param reltol: The relative tolerance of the individual species. If the relative difference of a species in
+		the trajectory is larger than this tolerance, the trajectory is considered as not converged / not in
+		equilibrium
+	:type reltol: float
+	:param figsize: Size of the plot figure, a tuple with (width, height)
+	:type figsize: tuple of two floats
+	:param legend: Legend configuration / location. 'off' deactivates the legend. Matplotlib legend location string
+		fixes the legend on the specfied location (see matplotlb documentation for details)
+	:type legend: str
+	:param log: If true, the equilibrium concentrations are plottet on a logarithmic scale
+	:returns: A matplotlib figure with the plot
 	"""
 
 	species = trajectory.species_names
 	equilibrium_data = analysis.equilibrium_state(trajectory, time_steps=time_steps, reltol=reltol)
 	fig, ax = plt.subplots(figsize=figsize)
-
 
 	x = np.arange(len(species))
 
