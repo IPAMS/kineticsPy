@@ -11,9 +11,16 @@ def equilibrium_state(trajectory, time_steps=100, reltol=0.01):
 	of the trajectory. If the relative fluctuation in the considered time range is larger than
 	``reltol``, the trajectory is considered as not to be converged.
 
-	:param trajectory:
-	:param time_steps:
-	:param reltol:
+	:param trajectory: The kinetic trajectory to analyze
+	:type trajectory: kineticsPy.base.Trajectory
+	:param time_steps: The number of final time steps at the end of the kinetic trajetory to be considered for the
+		averaging
+	:type time_steps: int
+	:param reltol: A relative tolerance. If the relative fluctuation of a species in the analyzed time segment is
+		larger than this tolerance, the trajectory is considered not to be converged and a ValueError is raised
+	:type reltol: float
+	:returns: A Pandas DataFrame with the equilibrium concentrations
+	:rtype: Pandas.DataFrame
 	"""
 
 	if time_steps>=trajectory.number_of_timesteps:

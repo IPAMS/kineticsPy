@@ -165,7 +165,7 @@ def plot_equilibrium_state(trajectory: Trajectory,
 	assumed as the average concentations of the chemical species in the trajectory in the final time steps
 
 	:param trajectory: The kinetic trajectory to analyze and plot
-	:type trajectory: kineticPy.base.Trajectory
+	:type trajectory: kineticsPy.base.Trajectory
 	:param time_steps: The number of time steps at the end of the trajectory to consider
 	:type time_steps: int
 	:param reltol: The relative tolerance of the individual species. If the relative difference of a species in
