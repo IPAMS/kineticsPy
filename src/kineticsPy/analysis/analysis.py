@@ -4,6 +4,7 @@
 Simulation result analysis
 """
 
+
 def equilibrium_state(trajectory, time_steps=100, reltol=0.01):
 	"""
 	Calculates the final equilibrium state of a kinetic trajectory. The final equilibrium state is determined
@@ -43,31 +44,37 @@ def equilibrium_state(trajectory, time_steps=100, reltol=0.01):
 
 	return averages
 
-def get_config_concentrations(trajectory,time_steps,rel_tol=0.01):
-    	"""
-	Generates a string for an concentrations input of a kinetic trajectory for another cantera simulation. It uses the above defined equilibrium_state function to get the result concentrations of an initial cantera simulation. After splitting and inserting certain characters, a string with the result concentrations is generated, which can be used for another cantera simulation.
+
+def equilibrium_state_concentration_string(trajectory, time_steps=100, rel_tol=0.01):
+	"""
+	Generates a string for an concentrations input of a kinetic trajectory for another cantera simulation.
+	It uses the equilibrium_state function to get the result concentrations of an initial cantera simulation.
+	After splitting and inserting certain characters, a string with the result concentrations is generated, which can be used for another cantera simulation.
 
 	:param trajectory: The kinetic trajectory to analyze
 	:type trajectory: kineticsPy.base.Trajectory
-	:param time_steps: The number of final time steps at the end of the kinetic trajetory to be considered for the
+	:param time_steps: The number of final time steps at the end of the kinetic trajectory to be considered for the
 		averaging
 	:type time_steps: int
-	:param reltol: A relative tolerance (see equilibrium_state function). If the relative fluctuation of a species in the analyzed time segment is larger than this tolerance, the trajectory is considered not to be converged and a ValueError is raised
-	:type reltol: float
+	:param rel_tol: A relative tolerance (see equilibrium_state function). If the relative fluctuation of a species in
+		the analyzed time segment is larger than this tolerance, the trajectory is considered
+		not to be converged and a ValueError is raised
+	:type rel_tol: float
 	:returns: A string with result concentrations
 	:rtype: string
 	"""
-    eq_conc = kpy.analysis.equilibrium_state(trajectory, time_steps=time_steps, reltol=rel_tol)
-    string_eq = eq_conc.to_string() # convert dataframe to string
-    split_eq = string_eq.split() # split the string (gets also rid of the blank spaces)
-    # insert ":" after each chemical species key (":" is requiered for cantera)
-    for i in range(len(split_eq),0,-1):
-        if i%2 != 0:
-            split_eq.insert(i,':')
-    # also insert "," after each number concentration to separate the chemical species concentrations
-    for j in range(len(split_eq)-1,1,-1):
-        if j%3 == 0:
-            split_eq.insert(j,',')
-    # merge everything to one string
-    final_conc_str = ''.join(split_eq)
-    return final_conc_str
+	eq_conc = equilibrium_state(trajectory, time_steps=time_steps, reltol=rel_tol)
+
+	string_eq = eq_conc.to_string()  # convert dataframe to string
+	split_eq = string_eq.split()  # split the string (gets also rid of the blank spaces)
+	# insert ":" delimiter after each chemical species key
+	for i in range(len(split_eq), 0, -1):
+		if i % 2 != 0:
+			split_eq.insert(i, ':')
+	# insert "," delimiter after each number concentration to separate individual species entries
+	for j in range(len(split_eq)-1, 1, -1):
+		if j % 3 == 0:
+			split_eq.insert(j, ',')
+	# merge everything to one string
+	final_conc_str = ''.join(split_eq)
+	return final_conc_str
