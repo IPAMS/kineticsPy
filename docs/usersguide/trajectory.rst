@@ -83,3 +83,24 @@ Slicing of species and time steps is possible:
 
 		vals1 = tra[1:4, 1:5] # selects a slice of species and time steps
 		vals2 = tra[:, 0] # selects the values of all species for the first time step
+
+
+Reading and Writing Trajectory Data
+===================================
+
+The :py:mod:`.base.fileio` module provides functions to read (and in the future probably write) trajectory data from other file formats. 
+
+Reading from IDSimF-RS results
+------------------------------
+
+`IDSimF <https://github.com/IPAMS/IDSimF>`_ allows to perform particle based kinetics simulations with the RS (reaction simulation) module. The kinetic results can be analyzed with the data analysis package `IDSimPy <https://github.com/IPAMS/IDSimPy>`_. However it is also possible to read IDSimF-RS result data into kineticsPy: 
+
+.. code-block:: python
+
+    import kineticsPy as kpy
+
+    # define a path to a RS result file: 
+    rs_file_path = os.path.join('my_data', 'my_rs_simulation_concentrations.txt')
+
+    # read the data into a trajectory: 
+    tra = kpy.read_idsimf_rs_result(self.rs_input)
