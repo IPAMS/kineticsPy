@@ -90,6 +90,7 @@ Reading and Writing Trajectory Data
 
 The :py:mod:`.base.fileio` module provides functions to read (and in the future probably write) trajectory data from other file formats. 
 
+------------------------------
 Reading from IDSimF-RS results
 ------------------------------
 
