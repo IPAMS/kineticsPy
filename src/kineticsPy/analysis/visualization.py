@@ -7,7 +7,7 @@ Kinetic simulation result plotting / visualization
 import numpy as np
 import matplotlib.pyplot as plt
 from kineticsPy.base.trajectory import Trajectory
-import kineticsPy.analysis as analysis
+from . import analysis
 
 __all__ = ['plot', 'plot_equilibrium_state']
 
