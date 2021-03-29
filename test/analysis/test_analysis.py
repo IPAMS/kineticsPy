@@ -18,9 +18,9 @@ class TestAnalysis(unittest.TestCase):
 
 		result = kpy.equilibrium_state(sim_long)
 
-		np_test.assert_allclose(result['N2'], 2.426859e+19)
+		np_test.assert_allclose(result['N2'], 2.426859e+19, rtol=1e-6)
 		np_test.assert_allclose(result['H2O'], 2.388267e+16)
-		np_test.assert_allclose(result['H3O+(H2O)4'], 8.684450e+11)
+		np_test.assert_allclose(result['H3O+(H2O)4'], 8.684450e+11, rtol=1e-6)
 
 	def test_equilibrium_state_exceptions(self):
 
