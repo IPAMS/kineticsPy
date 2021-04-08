@@ -10,8 +10,8 @@ from kineticsPy.base.trajectory import Trajectory
 
 __all__ = ["simulate_isobar_adiabatic"]
 
-def simulate_isobar_adiabatic(input_file, initial_mole_fractions, steps, dt, pressure,
-                              rtol=None):
+def simulate_isobar_adiabatic(input_file, initial_mole_fractions, *args,
+                              record_period=1, rtol=None):
 	"""
 	Constant-pressure, adiabatic kinetics simulation with Cantera: 
 	Simulation of chemical kinetics in an ideally stirred, isobar and adiabatic reactor.
@@ -36,24 +36,52 @@ def simulate_isobar_adiabatic(input_file, initial_mole_fractions, steps, dt, pre
 	.. note::
 		Species can be omitted in the initialization. Omitted species are initalized with no concentration.
 
+	Call signatures:
+
+	.. code-block:: python
+		simulate_isobar_adiabatic(input_file, initial_mole_fractions, n_steps, dt, pressure, record_period=1, rtol=None)
+		simulate_isobar_adiabatic(input_file, initial_mole_fractions, custom_steps, pressure, record_period=1, rtol=None):
+
+
 	:param input_file: Path to a configuration (.cti) file
 	:type input_file: path
 	:param initial_mole_fractions: Inital mole fraction configuration
 	:type initial_mole_fractions: str
-	:param steps: Number of time steps to simulate
-	:type steps: int
+	:param n_steps: Number of time steps to simulate
+	:type n_steps: int
 	:param dt: Length of a time step
 	:type dt: float
+	:param custom_steps: explicit time steps. The simulation will calculate the concentrations for
+		the list of explicit time steps
+	:type dt: list / array of floats
 	:param pressure: Background pressure in the reaction vessel
 	:type pressure: float
+	:param record_period: The period with which calculated samples are written to the resulting trajectory
+		Example: If this parameter is 10 only every 10th sample is written to the trajectory. This parameter is
+		intended to keep trajectory sizes controllable for simulations with very fine grained time steps.
+	:type record_period:
 	:param rtol: Relative tolerance passed to cantera solver
 	:type rtol: float
 	:return: :class:`kineticsPy.base.trajectory.Trajectory` (a kinetic trajectory object)
 	"""
 
+	# Parse / Process arguments:
+
 	# check if input file exists:
 	if not os.path.isfile(input_file):
-		return "NO FILE"
+		raise ValueError('The given cantea file input file is not existing')
+
+	if len(args) == 3:
+		n_steps = args[0]
+		custom_steps = None
+		dt = args[1]
+		pressure = args[2]
+	elif len(args) == 2:
+		custom_steps = args[0]
+		n_steps = len(custom_steps)
+		pressure = args[1]
+	else:
+		raise ValueError('Wrong number of arguments')
 
 	sol = ct.Solution(input_file)
 	air = ct.Solution('air.xml')
@@ -76,20 +104,33 @@ def simulate_isobar_adiabatic(input_file, initial_mole_fractions, steps, dt, pre
 	sim = ct.ReactorNet([reac])
 	if rtol:
 		sim.rtol = rtol
-	time = 0.0
-	times = np.zeros(steps)
-	data = np.zeros((steps, n_species))
 
-	for n in range(steps):
+	n_rec_steps = int(np.ceil(n_steps / record_period))
+
+	times = np.zeros(n_rec_steps)
+	data = np.zeros((n_rec_steps, n_species))
+
+	if custom_steps is None:
+		time = 0.0
+	else:
+		time = custom_steps[0]
+	n_recorded = 0
+	for n in range(n_steps):
 		sim.advance(time)
-		times[n] = time  # time in s
-		# .concentrations of a ThermoPhase returns concentrations in [kmol/m^3],
-		# we want to use molecules / cm^3 and have to convert:
-		data[n, :] = reac.thermo[species_names].concentrations * 6.022E20
+
+		if n % record_period == 0:
+			times[n_recorded] = time  # time in s
+			# .concentrations of a ThermoPhase returns concentrations in [kmol/m^3],
+			# we want to use molecules / cm^3 and have to convert:
+			data[n_recorded, :] = reac.thermo[species_names].concentrations * 6.022E20
+			n_recorded += 1
 		if n % 30000 == 0:
 			print('%5d %10.3e %10.3f %10.3f %14.6e' % (n, sim.time, reac.T, reac.thermo.P, reac.thermo.u))
 
-		time += dt
+		if custom_steps is None:
+			time += dt
+		elif n < n_steps-1:
+			time = custom_steps[n+1]
 
 	sim_attributes = {'pressure': pressure}
 	result = Trajectory(species_names, times, data, sim_attributes)

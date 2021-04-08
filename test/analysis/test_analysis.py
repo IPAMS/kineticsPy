@@ -39,6 +39,7 @@ class TestAnalysis(unittest.TestCase):
 		sim_long = util.water_cluster_simulation(rtol=1e-11)
 		c_string = kpy.equilibrium_state_concentration_string(sim_long)
 
+		# FIXME Test is machine dependent, test with synthetic, pre recorded trajectory
 		self.assertEqual(c_string,
 		                 "N2:2.426859e+19,H2O:2.388267e+16,H3O+:-7.512142e-06,H3O+(H2O):5.306039e+00,"
 		                 "H3O+(H2O)2:1.304673e+07,H3O+(H2O)3:8.699822e+10,H3O+(H2O)4:8.684449e+11")
