@@ -17,19 +17,48 @@ A simulation of chemical kinetics in an ideally stirred, isobar and adiabatic re
 Parameter overview
 ------------------
 
-The simulation function has the following parameters: 
+The simulation function has the following parameters can be called with two different signatures. It can be called either with a number of time steps to simulate ``n_steps`` and a time step length ``dt``
+
+.. code-block:: python
+
+		simulate_isobar_adiabatic(input_file, initial_mole_fractions, n_steps, dt, pressure, record_period=1, rtol=None)
+
+or with a custom array of time steps to simulate ``custom_steps``:
+
+.. code-block:: python
+
+		simulate_isobar_adiabatic(input_file, initial_mole_fractions, custom_steps, pressure, record_period=1, rtol=None)
+
+
+The arguments to the function mean in detail: 
 
   + The name of an Cantera configuration (``cti``) file, defining a thermodynamic phase in which the reactions takes place, the chemical species and the chemical reactions of the chemical species (``input_file``)
-  + the inital mole fractions of the individual chemical species (``inital_mole_fractions``)
-  + the number of time steps to calculate (``steps``)
-  + the time step length (``dt``)
+  + the initial mole fractions of the individual chemical species (``inital_mole_fractions``)
   + the background pressure in the reaction vessel in Pascals (``pressure``)
+
+The time steps to simulate are controlled either by 
+
+  + the number of time steps to calculate (``n_steps``)
+  + the time step length (``dt``) 
+
+or 
+
+  + an array of custom times to simulate (``custom_steps``) 
+
+.. note::
+    The simulation starts always at time = 0.0, even if ``custom_steps`` defines a list of times not beginning with 0.0. In this case, the initial state is not written to the resulting kinetic trajectory.
 
 .. note::
     The units for ``dt`` and ``pressure`` are the units specified by the Cantera input file. Usually the time unit is seconds and the pressure unit is Pascal. 
 
 .. note::
     Currently, the temperature in the reaction vessel is defined by the Cantera input file, while the pressure specified in the Cantera input file is overwritten by the value passed as ``pressure``. 
+
+
+The two optional / named parameters mean
+
+  + ``record_period`` is the period in terms of simulated time steps which is used to write data to the resulting kinetic trajectory. For example: If this parameter is 10, only every 10th time step is written to the kinetic trajectory. This parameter is intended to control the size of kinetic trajectories with simulations which require very fine grained time steps. 
+  + ``rtol`` tolerance parameter which is passed to the Cantera solver
 
 ----------------------
 Initial mole fractions
@@ -57,7 +86,10 @@ The simulation result is a kinetic trajectory (see :ref:`usersguide-trajectory`)
 Example simulation
 ------------------
 
-Example simulation with an input file ``WaterCluster_RoomTemp.cti``, the initial mole fraction mentioned above, 10000 time steps with 2e-9 seconds length and a pressure of 1e5 Pascal: 
+Equidistant, linear time steps
+------------------------------
+
+Example simulation with an input file ``WaterCluster_RoomTemp.cti``, the initial mole fraction mentioned above, 10000 equidistant time steps with 2e-9 seconds length and a pressure of 1e5 Pascal: 
 
 .. code-block:: python 
 
@@ -69,3 +101,23 @@ Example simulation with an input file ``WaterCluster_RoomTemp.cti``, the initial
             input_file,
             'H2O:2.5e+14, N2:2.54e+17, H3O+:1e+10',
             10000, 2e-9, 1e5)
+
+
+Custom logarithmic time steps
+------------------------------
+
+Example simulation with an input file ``WaterCluster_RoomTemp.cti``, the initial mole fraction mentioned above, and 10000 logarithmically distributed time steps between :math:`10^{-7}` and :math:`10^{-1}` seconds defined by the ``logspace`` function of numpy and a pressure of 1e5 Pascal: 
+
+.. code-block:: python 
+
+    import kineticsPy as kpy
+    import numpy as np
+
+    input_file = 'WaterCluster_RoomTemp.cti'
+    custom_time_steps = np.logspace(-7, -1, 10000)
+
+    simulation_result = kpy.cantera.simulate_isobar_adiabatic(
+            input_file,
+            'H2O:2.5e+14, N2:2.54e+17, H3O+:1e+10',
+            custom_time_steps, 1e5)
+

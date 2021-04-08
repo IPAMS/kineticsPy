@@ -39,8 +39,9 @@ def simulate_isobar_adiabatic(input_file, initial_mole_fractions, *args,
 	Call signatures:
 
 	.. code-block:: python
+
 		simulate_isobar_adiabatic(input_file, initial_mole_fractions, n_steps, dt, pressure, record_period=1, rtol=None)
-		simulate_isobar_adiabatic(input_file, initial_mole_fractions, custom_steps, pressure, record_period=1, rtol=None):
+		simulate_isobar_adiabatic(input_file, initial_mole_fractions, custom_steps, pressure, record_period=1, rtol=None)
 
 
 	:param input_file: Path to a configuration (.cti) file
