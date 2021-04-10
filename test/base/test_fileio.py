@@ -16,3 +16,4 @@ class TestFileIO(unittest.TestCase):
 		self.assertEqual(tra.number_of_timesteps, 50)
 		self.assertAlmostEqual(tra.times.tolist()[-1], 9.8e-5)
 		self.assertEqual(tra.loc['Cl_2'].iloc[4], 71)
+		self.assertEqual(tra.concentration_unit, 'simulated particles')

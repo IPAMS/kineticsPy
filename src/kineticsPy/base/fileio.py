@@ -24,5 +24,5 @@ def read_idsimf_rs_result(rs_file_path):
 	times = df['Time'].tolist()
 	data = df[names].values
 
-	trajectory = Trajectory(names, times, data)
+	trajectory = Trajectory(names, times, data, concentration_unit='simulated particles')
 	return trajectory
