@@ -15,7 +15,7 @@ plt.style.use('ggplot')
 
 
 def plot(trajectory: Trajectory, species_conf=None, time_steps=None,
-         figsize=None, legend='best'):
+         normalized=False, figsize=None, legend='best'):
 	"""
 	Generates a concentration / time profile plot for a trajectory.
 
@@ -66,6 +66,8 @@ def plot(trajectory: Trajectory, species_conf=None, time_steps=None,
 	:type species_conf: list of str or list of species / line style definitions
 	:param time_steps: Time step range selection (see above for details)
 	:type time_steps: int or tuple of two int
+	:param normalized: If true concentrations are normalized to [0, 1] for plotting
+	:type normalized: bool
 	:param figsize: Size of the plot figure, a tuple with (width, height)
 	:type figsize: tuple of two floats
 	:param legend: Legend configuration / location. 'off' deactivates the legend. Matplotlib legend location string
@@ -103,6 +105,7 @@ def plot(trajectory: Trajectory, species_conf=None, time_steps=None,
 				                 '(Species, line style, color)')
 
 			style_conf_present = True
+			species_to_plot = [sp[0] for sp in species_conf]
 	else:
 		raise ValueError('Illegal type for species_conf')
 
@@ -128,13 +131,19 @@ def plot(trajectory: Trajectory, species_conf=None, time_steps=None,
 
 		time_steps_to_plot = slice(time_steps[0], time_steps[1])
 
-	fig, ax = plt.subplots(figsize=figsize)
+	if normalized:
+		max_vals = [np.max(trajectory.loc[species, time_steps_to_plot]) for species in species_to_plot]
+		norm_factor = 1.0/np.max(max_vals)
+	else:
+		norm_factor = 1.0
 
+
+	fig, ax = plt.subplots(figsize=figsize)
 	if style_conf_present:
 		for sp in species_conf:
 			ax.plot(
 				times_s.iloc[time_steps_to_plot],
-				trajectory.loc[sp[0], time_steps_to_plot],
+				trajectory.loc[sp[0], time_steps_to_plot] * norm_factor,
 				sp[1],
 				color=sp[2],
 				label=sp[0])
@@ -142,14 +151,17 @@ def plot(trajectory: Trajectory, species_conf=None, time_steps=None,
 		for species in species_to_plot:
 			ax.plot(
 				times_s.iloc[time_steps_to_plot],
-				trajectory.loc[species, time_steps_to_plot],
+				trajectory.loc[species, time_steps_to_plot] * norm_factor,
 				label=species)
 
 	if legend is not None and legend != 'off':
 		ax.legend(loc=legend)
 
 	ax.set_xlabel('time (s)')
-	ax.set_ylabel('concentration (' + trajectory.concentration_unit + ')')
+	if normalized:
+		ax.set_ylabel('normalized concentration')
+	else:
+		ax.set_ylabel('concentration (' + trajectory.concentration_unit + ')')
 
 	return fig
 

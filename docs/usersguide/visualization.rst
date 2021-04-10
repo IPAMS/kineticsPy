@@ -179,7 +179,18 @@ The size of the plot figure is set with the ``figsize`` named parameter, which t
 .. image:: images/concentration_plot_additional_parameters_03.svg
     :alt: Water cluster trajectory with custom width and height
 
+----------------
+Normalized Plots
+----------------
 
+Plots can be normalized on the concentration axis:
+
+.. code-block:: python 
+
+    kpy.plot(cl_sim_result, normalized=True)
+
+.. image:: images/concentration_plot_additional_parameters_04.svg
+    :alt: Water cluster trajectory normalized concentrations
 
 Equilibrium concentration plots
 ===============================

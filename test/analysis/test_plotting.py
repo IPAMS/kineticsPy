@@ -46,9 +46,15 @@ class TestVisualization(unittest.TestCase):
 		plot = kpy.plot(sim_result, ('H3O+', 'H3O+(H2O)', 'H3O+(H2O)2', 'H3O+(H2O)3'), 30)
 		plt.savefig(os.path.join(self.result_base_path, 'watercluster_plot_simple_06.png'))
 
+		plot = kpy.plot(sim_result, ('H3O+', 'H3O+(H2O)', 'H3O+(H2O)2', 'H3O+(H2O)3'), 30, normalized=True)
+		plt.savefig(os.path.join(self.result_base_path, 'watercluster_plot_simple_07.png'))
+
 		# plotting of time step range:
 		plot = kpy.plot(sim_result, ('H3O+', 'H3O+(H2O)', 'H3O+(H2O)2', 'H3O+(H2O)3'), (50, 100))
-		plt.savefig(os.path.join(self.result_base_path, 'watercluster_plot_simple_07.png'))
+		plt.savefig(os.path.join(self.result_base_path, 'watercluster_plot_simple_08.png'))
+
+		plot = kpy.plot(sim_result, ('H3O+', 'H3O+(H2O)', 'H3O+(H2O)2', 'H3O+(H2O)3'), (50, 100), normalized=True)
+		plt.savefig(os.path.join(self.result_base_path, 'watercluster_plot_simple_09.png'))
 
 		with self.assertRaises(ValueError):
 			kpy.plot(sim_result, time_steps=(100, 50))
@@ -78,6 +84,9 @@ class TestVisualization(unittest.TestCase):
 
 		kpy.plot(sim_result, species_line_config_2, 100, legend='off')
 		plt.savefig(os.path.join(self.result_base_path, 'synthetic_data_plot_customized_02.png'))
+
+		kpy.plot(sim_result, species_line_config_2, 100, normalized=True)
+		plt.savefig(os.path.join(self.result_base_path, 'synthetic_data_plot_customized_03.png'))
 
 	def test_equilibrium_state_plot(self):
 		sim_result = util.water_cluster_simulation()
