@@ -192,6 +192,51 @@ Plots can be normalized on the concentration axis:
 .. image:: images/concentration_plot_additional_parameters_04.svg
     :alt: Water cluster trajectory normalized concentrations
 
+
+-----------------
+logarithmic Plots
+-----------------
+
+The time and concentration axis can be plotted logarithmically by setting the `log` parameter. 
+
+The default `log='none'` plots both axes linearly: 
+
+.. code-block:: python 
+
+    kpy.plot(cl_sim_result, log='none')
+
+.. image:: images/concentration_plot_additional_parameters_05.svg
+    :alt: Water cluster trajectory with both axes linearly plotted
+
+
+The concentration axis can be plotted logarithmically by setting `log='concentration'`: 
+
+.. code-block:: python 
+
+    kpy.plot(cl_sim_result, log='concentration')
+
+.. image:: images/concentration_plot_additional_parameters_06.svg
+    :alt: Water cluster trajectory with concentration axis plotted logarithmically
+
+Similarly, by setting `log='time'` the time axis can be plotted logarithmically: 
+
+.. code-block:: python 
+
+    kpy.plot(cl_sim_result, log='time')
+
+.. image:: images/concentration_plot_additional_parameters_07.svg
+    :alt: Water cluster trajectory with time axis plotted logarithmically
+
+Both axis can be plotted logarithmically in a log-log plot by specifying `log='both'`: 
+
+.. code-block:: python 
+
+    kpy.plot(cl_sim_result, log='both')
+
+.. image:: images/concentration_plot_additional_parameters_08.svg
+    :alt: Water cluster trajectory with both axes plotted logarithmically
+
+
 Equilibrium concentration plots
 ===============================
 

@@ -65,6 +65,22 @@ class TestVisualization(unittest.TestCase):
 		with self.assertRaises(ValueError):
 			kpy.plot(sim_result, time_steps=(1000, 10001))
 
+	def test_logarithmic_concentration_plots_with_simulation(self):
+		sim_result = util.water_cluster_simulation()
+
+		# plot full trajectory:
+		plot = kpy.plot(sim_result, log='none')
+		plt.savefig(os.path.join(self.result_base_path,'watercluster_plot_log_01.png'))
+
+		plot = kpy.plot(sim_result, log='concentration')
+		plt.savefig(os.path.join(self.result_base_path, 'watercluster_plot_log_02.png'))
+
+		plot = kpy.plot(sim_result, log='time')
+		plt.savefig(os.path.join(self.result_base_path, 'watercluster_plot_log_03.png'))
+
+		plot = kpy.plot(sim_result, log='both')
+		plt.savefig(os.path.join(self.result_base_path, 'watercluster_plot_log_04.png'))
+
 	def test_concentration_plots_with_species_line_specifications(self):
 		sim_result = util.simple_synthetic_trajectory()
 

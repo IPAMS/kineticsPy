@@ -15,7 +15,7 @@ plt.style.use('ggplot')
 
 
 def plot(trajectory: Trajectory, species_conf=None, time_steps=None,
-         normalized=False, figsize=None, legend='best'):
+         normalized=False, log='none', figsize=None, legend='best'):
 	"""
 	Generates a concentration / time profile plot for a trajectory.
 
@@ -68,6 +68,10 @@ def plot(trajectory: Trajectory, species_conf=None, time_steps=None,
 	:type time_steps: int or tuple of two int
 	:param normalized: If true concentrations are normalized to [0, 1] for plotting
 	:type normalized: bool
+	:param log: Logarithmic plot mode.
+		If "none" both axes are linear, if "concentration" the concentration axis is log plotted,
+		if "time" the time axis is log plotted, if "both" both axes are log plotted
+	:type log: str
 	:param figsize: Size of the plot figure, a tuple with (width, height)
 	:type figsize: tuple of two floats
 	:param legend: Legend configuration / location. 'off' deactivates the legend. Matplotlib legend location string
@@ -137,11 +141,24 @@ def plot(trajectory: Trajectory, species_conf=None, time_steps=None,
 	else:
 		norm_factor = 1.0
 
+	if log not in ('none', 'concentration', 'time', 'both'):
+		raise ValueError('Illegal option passed for log')
 
 	fig, ax = plt.subplots(figsize=figsize)
+
+	if log == 'none':
+		plot_fct = ax.plot
+	elif log == 'concentration':
+		plot_fct = ax.semilogy
+	elif log == 'time':
+		plot_fct = ax.semilogx
+	elif log == 'both':
+		plot_fct = ax.loglog
+
+
 	if style_conf_present:
 		for sp in species_conf:
-			ax.plot(
+			plot_fct(
 				times_s.iloc[time_steps_to_plot],
 				trajectory.loc[sp[0], time_steps_to_plot] * norm_factor,
 				sp[1],
@@ -149,7 +166,7 @@ def plot(trajectory: Trajectory, species_conf=None, time_steps=None,
 				label=sp[0])
 	else:
 		for species in species_to_plot:
-			ax.plot(
+			plot_fct(
 				times_s.iloc[time_steps_to_plot],
 				trajectory.loc[species, time_steps_to_plot] * norm_factor,
 				label=species)
