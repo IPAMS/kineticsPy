@@ -239,7 +239,7 @@ Both axis can be plotted logarithmically in a log-log plot by specifying `log='b
 Box plots of concentrations and averaged concentrations
 =======================================================
 
-The concentrations in a simulation time step or the averaged concentrations in a time step range can be plotted with :py:func:'kineticsPy.analysis.visualization.plot_average_concentrations'. This function takes a kinetic trajectory and creates a box plot of the concentrations of a time step or the averaged concentations in a time step range. 
+The concentrations in a simulation time step or the averaged concentrations in a time step range can be plotted with :py:func:`kineticsPy.analysis.visualization.plot_average_concentrations`. This function takes a kinetic trajectory and creates a box plot of the concentrations of a time step or the averaged concentations in a time step range. 
 
 For exammple, the plot of time step with index 10 on a logarithmic axis with 
 
