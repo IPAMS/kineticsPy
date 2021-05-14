@@ -113,27 +113,7 @@ def plot(trajectory: Trajectory, species_conf=None, time_steps=None,
 	else:
 		raise ValueError('Illegal type for species_conf')
 
-
-	if time_steps is None:
-		time_steps_to_plot = slice(0, trajectory.number_of_timesteps)
-	if isinstance(time_steps, int):
-		# single int: plot all time steps until the end time step specified by the single int
-		time_steps_to_plot = slice(0, time_steps)
-	elif isinstance(time_steps, tuple):
-		# if a tuple with two values is given: Create time step range from it
-
-		if len(time_steps) != 2:
-			raise ValueError('Time step range has to be a tuple with two elements.')
-		if time_steps[1] <= time_steps[0]:
-			raise ValueError('Illegal time step range definition: '
-			                 'Second element of time step range tuple has to be larger than first element')
-		if time_steps[0] < 0:
-			raise ValueError('Lower bound of time step range has to be positive')
-		if time_steps[1] >= trajectory.number_of_timesteps:
-			raise ValueError('Upper bound of time step range has to be '
-			                 'below number of time steps in plotted trajectory')
-
-		time_steps_to_plot = slice(time_steps[0], time_steps[1])
+	time_steps_to_plot = _time_steps_to_plot(time_steps, trajectory)
 
 	if normalized:
 		max_vals = [np.max(trajectory.loc[species, time_steps_to_plot]) for species in species_to_plot]
@@ -186,9 +166,12 @@ def plot(trajectory: Trajectory, species_conf=None, time_steps=None,
 def plot_average_concentrations(trajectory: Trajectory,
                                 time_steps=None,
                                 figsize=None,
-                                legen='best',
+                                legend='best',
                                 log=False):
-	pass
+
+	species = trajectory.species_names
+
+	return _concentration_box_plot(equilibrium_data, species, figsize, legend, log, trajectory.concentration_unit)
 
 
 def plot_equilibrium_state(trajectory: Trajectory,
@@ -222,6 +205,34 @@ def plot_equilibrium_state(trajectory: Trajectory,
 	equilibrium_data = analysis.equilibrium_state(trajectory, time_steps=time_steps, reltol=reltol)
 
 	return _concentration_box_plot(equilibrium_data, species, figsize, legend, log, trajectory.concentration_unit)
+
+
+def _time_steps_to_plot(time_steps, trajectory):
+	"""
+	Defines which time steps should be plotted from a user provided time_steps parameter and a trajectory
+	"""
+	if time_steps is None:
+		time_steps_to_plot = slice(0, trajectory.number_of_timesteps)
+	if isinstance(time_steps, int):
+		# single int: plot all time steps until the end time step specified by the single int
+		time_steps_to_plot = slice(0, time_steps)
+	elif isinstance(time_steps, tuple):
+		# if a tuple with two values is given: Create time step range from it
+
+		if len(time_steps) != 2:
+			raise ValueError('Time step range has to be a tuple with two elements.')
+		if time_steps[1] <= time_steps[0]:
+			raise ValueError('Illegal time step range definition: '
+			                 'Second element of time step range tuple has to be larger than first element')
+		if time_steps[0] < 0:
+			raise ValueError('Lower bound of time step range has to be positive')
+		if time_steps[1] >= trajectory.number_of_timesteps:
+			raise ValueError('Upper bound of time step range has to be '
+			                 'below number of time steps in plotted trajectory')
+
+		time_steps_to_plot = slice(time_steps[0], time_steps[1])
+
+	return time_steps_to_plot
 
 
 def _concentration_box_plot(concs, labels, figsize, legend, log, concentration_unit):
