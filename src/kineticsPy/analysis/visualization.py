@@ -183,6 +183,14 @@ def plot(trajectory: Trajectory, species_conf=None, time_steps=None,
 	return fig
 
 
+def plot_average_concentrations(trajectory: Trajectory,
+                                time_steps=None,
+                                figsize=None,
+                                legen='best',
+                                log=False):
+	pass
+
+
 def plot_equilibrium_state(trajectory: Trajectory,
                            time_steps=100,
                            reltol=0.01,
@@ -212,20 +220,26 @@ def plot_equilibrium_state(trajectory: Trajectory,
 
 	species = trajectory.species_names
 	equilibrium_data = analysis.equilibrium_state(trajectory, time_steps=time_steps, reltol=reltol)
+
+	return _concentration_box_plot(equilibrium_data, species, figsize, legend, log, trajectory.concentration_unit)
+
+
+def _concentration_box_plot(concs, labels, figsize, legend, log, concentration_unit):
+
 	fig, ax = plt.subplots(figsize=figsize)
 
-	x = np.arange(len(species))
+	x = np.arange(len(labels))
 
-	for i in range(len(species)):
-		ax.bar(x[i], equilibrium_data[species[i]], label=species[i])
+	for i in range(len(labels)):
+		ax.bar(x[i], concs[labels[i]], label=labels[i])
 
 	if log:
 		ax.set_yscale('log')
 
 	ax.set_xticks(x)
-	ax.set_xticklabels(species)
+	ax.set_xticklabels(labels)
 	ax.tick_params(axis="x", rotation=90)
-	ax.set_ylabel('concentration (' + trajectory.concentration_unit + ')')
+	ax.set_ylabel('concentration (' + concentration_unit + ')')
 	if legend is not None and legend is not 'off':
 		ax.legend(loc=legend)
 
