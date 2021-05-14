@@ -8,7 +8,7 @@ The :py:mod:`kineticsPy.analysis.visualization` module contains visualization an
 
 
 Concentration-Time Profile Plotting
-=====================================
+===================================
 
 Concentration-time profiles can be plotted as line plots with :py:func:`kineticsPy.analysis.visualization.plot`. This plot function provides a convenient interface for most common plotting requirements. 
 
@@ -235,6 +235,35 @@ Both axis can be plotted logarithmically in a log-log plot by specifying `log='b
 
 .. image:: images/concentration_plot_additional_parameters_08.svg
     :alt: Water cluster trajectory with both axes plotted logarithmically
+
+Box plots of concentrations and averaged concentrations
+=======================================================
+
+The concentrations in a simulation time step or the averaged concentrations in a time step range can be plotted with :py:func:'kineticsPy.analysis.visualization.plot_average_concentrations'. This function takes a kinetic trajectory and creates a box plot of the concentrations of a time step or the averaged concentations in a time step range. 
+
+For exammple, the plot of time step with index 10 on a logarithmic axis with 
+
+.. code-block:: python 
+
+    kpy.plot_average_concentrations(cl_sim_result, 10, log=True)
+
+gives 
+
+.. image:: images/average_concentration_box_plot_01.svg
+    :alt: Simple concentration box plot
+
+Similarly to :py:func:`kineticsPy.analysis.visualization.plot`, the species which are plotted can be specified with their identifiers. For example 
+
+.. code-block:: python 
+
+    selection = ['H3O+', 'H3O+(H2O)','H3O+(H2O)2','H3O+(H2O)3','H3O+(H2O)4']
+    kpy.plot_average_concentrations(cl_sim_result, (40, 50), selection)
+
+gives the average concentrations of the species selection in the specified time step range of the time steps between 40 and 50
+
+.. image:: images/average_concentration_box_plot_02.svg
+    :alt: Simple concentration box plot of a time step and species selection
+
 
 
 Equilibrium concentration plots
