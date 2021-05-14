@@ -170,7 +170,42 @@ def plot_average_concentrations(trajectory: Trajectory,
                                 legend='best',
                                 log=False):
 	"""
-	Todo: Docstring
+	Creates a box plot of the averaged concentrations of specified time steps.
+
+	**Chemical species selection**
+
+	Passing a single chemical species identifier or a list of chemical identifiers to ``species_conf`` selects
+	chemical species to plot:
+
+	.. code-block:: python
+
+		plot_average_concentrations(trajectory, species='H2O')  # will plot Water (H2O)
+		plot_average_concentrations(trajectory, species=['H2O', 'N2'])  # will plot Water (H2O) and Nitrogen (N2)
+
+	**Time range selection**
+
+	``time_steps`` allows to specify the plotted time steps.
+
+	* A single integer defines selects a single time step to plot.
+	* A tuple of two time step indices ``(lower, upper)`` defines a lower and an upper boundary of the time step
+	  range to be plotted.
+
+	.. code-block:: python
+
+		plot_average_concentrations(trajectory, time_steps=150)  # will plot time step 150
+		plot_average_concentrations(trajectory, time_steps=(100, 200) )  # will average time steps between 100 and 200
+
+	:param trajectory: The kinetic trajectory to analyze and plot
+	:type trajectory: kineticsPy.base.Trajectory
+	:param time_steps: Time step range selection (see above for details)
+	:type time_steps: int or tuple of two int
+	:param figsize: Size of the plot figure, a tuple with (width, height)
+	:type figsize: tuple of two floats
+	:param legend: Legend configuration / location. 'off' deactivates the legend. Matplotlib legend location string
+		fixes the legend on the specfied location (see matplotlb documentation for details)
+	:type legend: str
+	:param log: If true, the concentrations are plottet on a logarithmic scale
+	:returns: A matplotlib figure with the plot
 	"""
 
 	if species is None:
@@ -178,8 +213,12 @@ def plot_average_concentrations(trajectory: Trajectory,
 	else:
 		species_to_plot = list(species)
 
-	time_steps_to_plot = _time_steps_to_plot(time_steps, trajectory)
-	average_data = trajectory.loc[species_to_plot, time_steps_to_plot].mean(axis=0)
+
+	if isinstance(time_steps, int): # we need slightly different behavior for time step selection
+		average_data = trajectory.loc[species_to_plot, time_steps]
+	else:
+		time_steps_to_plot = _time_steps_to_plot(time_steps, trajectory)
+		average_data = trajectory.loc[species_to_plot, time_steps_to_plot].mean(axis=0)
 
 	return _concentration_box_plot(average_data, species_to_plot, figsize, legend, log, trajectory.concentration_unit)
 
