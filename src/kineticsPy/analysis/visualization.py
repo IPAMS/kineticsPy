@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from kineticsPy.base.trajectory import Trajectory
 from . import analysis
 
-__all__ = ['plot', 'plot_equilibrium_state']
+__all__ = ['plot', 'plot_average_concentrations', 'plot_equilibrium_state']
 
 plt.style.use('ggplot')
 
@@ -165,13 +165,23 @@ def plot(trajectory: Trajectory, species_conf=None, time_steps=None,
 
 def plot_average_concentrations(trajectory: Trajectory,
                                 time_steps=None,
+                                species=None,
                                 figsize=None,
                                 legend='best',
                                 log=False):
+	"""
+	Todo: Docstring
+	"""
 
-	species = trajectory.species_names
+	if species is None:
+		species_to_plot = list(trajectory.species_names)
+	else:
+		species_to_plot = list(species)
 
-	return _concentration_box_plot(equilibrium_data, species, figsize, legend, log, trajectory.concentration_unit)
+	time_steps_to_plot = _time_steps_to_plot(time_steps, trajectory)
+	average_data = trajectory.loc[species_to_plot, time_steps_to_plot].mean(axis=0)
+
+	return _concentration_box_plot(average_data, species_to_plot, figsize, legend, log, trajectory.concentration_unit)
 
 
 def plot_equilibrium_state(trajectory: Trajectory,

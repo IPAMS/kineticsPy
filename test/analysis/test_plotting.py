@@ -16,6 +16,8 @@ class TestVisualization(unittest.TestCase):
 	def test_concentration_plots_with_simulation(self):
 		sim_result = util.water_cluster_simulation()
 
+		# concentration profiles ------------------------------
+
 		# plot full trajectory:
 		plot = kpy.plot(sim_result)
 		plt.savefig(os.path.join(self.result_base_path,'watercluster_plot_simple_01.png'))
@@ -64,6 +66,14 @@ class TestVisualization(unittest.TestCase):
 
 		with self.assertRaises(ValueError):
 			kpy.plot(sim_result, time_steps=(1000, 10001))
+
+		# average concentration box plots --------------------
+
+		plot = kpy.plot_average_concentrations(sim_result, 10, log=True)
+		plt.savefig(os.path.join(self.result_base_path, 'average_concentration_box_plot_01.png'))
+
+		plot = kpy.plot_average_concentrations(sim_result, (50, 100), ('H3O+', 'H3O+(H2O)', 'H3O+(H2O)2', 'H3O+(H2O)3'))
+		plt.savefig(os.path.join(self.result_base_path, 'average_concentration_box_plot_02.png'))
 
 	def test_logarithmic_concentration_plots_with_simulation(self):
 		sim_result = util.water_cluster_simulation()
